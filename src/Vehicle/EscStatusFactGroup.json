@@ -4,103 +4,46 @@
     "QGC.MetaData.Facts":
 [
 {
-    "name":             "index",
-    "shortDesc":        "Index Of The First ESC In This Message",
-    "type":             "uint8",
-    "default":          0
-},
-{
-    "name":             "rpmFirst",
-    "shortDesc":        "Rotation Per Minute",
+    "name":             "rpm",
+    "shortDesc":        "RPM",
     "type":             "float",
-    "decimalPlaces":    2,
+    "decimalPlaces":    0,
     "default":          null
 },
 {
-    "name":             "rpmSecond",
-    "shortDesc":        "Rotation Per Minute",
+    "name":             "mechPwr",
+    "shortDesc":        "Mech Power",
     "type":             "float",
-    "decimalPlaces":    2,
+    "decimalPlaces":    0,
     "default":          null
 },
 {
-    "name":             "rpmThird",
-    "shortDesc":        "Rotation Per Minute",
+    "name":             "efficiency",
+    "shortDesc":        "Efficiency (%)",
     "type":             "float",
-    "decimalPlaces":    2,
+    "decimalPlaces":    1,
     "default":          null
 },
 {
-    "name":             "rpmFourth",
-    "shortDesc":        "Rotation Per Minute",
+    "name":             "gPerW",
+    "shortDesc":        "Grams per Watt",
     "type":             "float",
-    "decimalPlaces":    2,
+    "decimalPlaces":    0,
     "default":          null
 },
 {
-    "name":             "currentFirst",
-    "shortDesc":        "Current",
+    "name":             "cmdHeight",
+    "shortDesc":        "Cmd Height (m)",
     "type":             "float",
-    "decimalPlaces":    2,
-    "default":          null,
-    "units":            "A"
-
+    "decimalPlaces":    0,
+    "default":          null
 },
 {
-    "name":             "currentSecond",
-    "shortDesc":        "Current",
+    "name":             "estHeight",
+    "shortDesc":        "Est Height (m)",
     "type":             "float",
-    "decimalPlaces":    2,
-    "default":          null,
-    "units":            "A"
-},
-{
-    "name":             "currentThird",
-    "shortDesc":        "Current",
-    "type":             "float",
-    "decimalPlaces":    2,
-    "default":          null,
-    "units":            "A"
-},
-{
-    "name":             "currentFourth",
-    "shortDesc":        "Current",
-    "type":             "float",
-    "decimalPlaces":    2,
-    "default":          null,
-    "units":            "A"
-},
-{
-    "name":             "voltageFirst",
-    "shortDesc":        "Voltage",
-    "type":             "float",
-    "decimalPlaces":    2,
-    "default":          null,
-    "units":            "v"
-},
-{
-    "name":             "voltageSecond",
-    "shortDesc":        "Voltage",
-    "type":             "float",
-    "decimalPlaces":    2,
-    "default":          null,
-    "units":            "v"
-},
-{
-    "name":             "voltageThird",
-    "shortDesc":        "Voltage",
-    "type":             "float",
-    "decimalPlaces":    2,
-    "default":          null,
-    "units":            "v"
-},
-{
-    "name":             "voltageFourth",
-    "shortDesc":        "Voltage",
-    "type":             "float",
-    "decimalPlaces":    2,
-    "default":          null,
-    "units":            "v"
+    "decimalPlaces":    0,
+    "default":          null
 }
 ]
 }

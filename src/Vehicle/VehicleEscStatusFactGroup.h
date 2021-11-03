@@ -21,74 +21,35 @@ class VehicleEscStatusFactGroup : public FactGroup
 public:
     VehicleEscStatusFactGroup(QObject* parent = nullptr);
 
-    Q_PROPERTY(Fact* index              READ index              CONSTANT)
+    Q_PROPERTY(Fact* rpm                READ rpm                CONSTANT)
+    Q_PROPERTY(Fact* mechPwr            READ mechPwr            CONSTANT)
+    Q_PROPERTY(Fact* efficiency         READ efficiency         CONSTANT)
+    Q_PROPERTY(Fact* gPerW              READ gPerW              CONSTANT)
+    Q_PROPERTY(Fact* cmdHeight          READ cmdHeight          CONSTANT)
+    Q_PROPERTY(Fact* estHeight          READ estHeight          CONSTANT)
 
-    Q_PROPERTY(Fact* rpmFirst           READ rpmFirst           CONSTANT)
-    Q_PROPERTY(Fact* rpmSecond          READ rpmSecond          CONSTANT)
-    Q_PROPERTY(Fact* rpmThird           READ rpmThird           CONSTANT)
-    Q_PROPERTY(Fact* rpmFourth          READ rpmFourth          CONSTANT)
-
-    Q_PROPERTY(Fact* currentFirst       READ currentFirst       CONSTANT)
-    Q_PROPERTY(Fact* currentSecond      READ currentSecond      CONSTANT)
-    Q_PROPERTY(Fact* currentThird       READ currentThird       CONSTANT)
-    Q_PROPERTY(Fact* currentFourth      READ currentFourth      CONSTANT)
-
-    Q_PROPERTY(Fact* voltageFirst       READ voltageFirst       CONSTANT)
-    Q_PROPERTY(Fact* voltageSecond      READ voltageSecond      CONSTANT)
-    Q_PROPERTY(Fact* voltageThird       READ voltageThird       CONSTANT)
-    Q_PROPERTY(Fact* voltageFourth      READ voltageFourth      CONSTANT)
-
-    Fact* index                         () { return &_indexFact; }
-
-    Fact* rpmFirst                      () { return &_rpmFirstFact; }
-    Fact* rpmSecond                     () { return &_rpmSecondFact; }
-    Fact* rpmThird                      () { return &_rpmThirdFact; }
-    Fact* rpmFourth                     () { return &_rpmFourthFact; }
-
-    Fact* currentFirst                  () { return &_currentFirstFact; }
-    Fact* currentSecond                 () { return &_currentSecondFact; }
-    Fact* currentThird                  () { return &_currentThirdFact; }
-    Fact* currentFourth                 () { return &_currentFourthFact; }
-
-    Fact* voltageFirst                  () { return &_voltageFirstFact; }
-    Fact* voltageSecond                 () { return &_voltageSecondFact; }
-    Fact* voltageThird                  () { return &_voltageThirdFact; }
-    Fact* voltageFourth                 () { return &_voltageFourthFact; }
+    Fact* rpm                           () { return &_rpmFact; }
+    Fact* mechPwr                       () { return &_mechPwrFact; }
+    Fact* efficiency                    () { return &_efficiencyFact; }
+    Fact* gPerW                         () { return &_gPerWFact; }
+    Fact* cmdHeight                     () { return &_cmdHeightFact; }
+    Fact* estHeight                     () { return &_estHeightFact; }
 
     // Overrides from FactGroup
     void handleMessage(Vehicle* vehicle, mavlink_message_t& message) override;
 
-    static const char* _indexFactName;
+    static const char* _rpmFactName;
+    static const char* _mechPwrFactName;
+    static const char* _efficiencyFactName;
+    static const char* _gPerWFactName;
+    static const char* _cmdHeightFactName;
+    static const char* _estHeightFactName;
 
-    static const char* _rpmFirstFactName;
-    static const char* _rpmSecondFactName;
-    static const char* _rpmThirdFactName;
-    static const char* _rpmFourthFactName;
-
-    static const char* _currentFirstFactName;
-    static const char* _currentSecondFactName;
-    static const char* _currentThirdFactName;
-    static const char* _currentFourthFactName;
-
-    static const char* _voltageFirstFactName;
-    static const char* _voltageSecondFactName;
-    static const char* _voltageThirdFactName;
-    static const char* _voltageFourthFactName;
 private:
-    Fact _indexFact;
-
-    Fact _rpmFirstFact;
-    Fact _rpmSecondFact;
-    Fact _rpmThirdFact;
-    Fact _rpmFourthFact;
-
-    Fact _currentFirstFact;
-    Fact _currentSecondFact;
-    Fact _currentThirdFact;
-    Fact _currentFourthFact;
-
-    Fact _voltageFirstFact;
-    Fact _voltageSecondFact;
-    Fact _voltageThirdFact;
-    Fact _voltageFourthFact;
+    Fact _rpmFact;
+    Fact _mechPwrFact;
+    Fact _efficiencyFact;
+    Fact _gPerWFact;
+    Fact _cmdHeightFact;
+    Fact _estHeightFact;
 };
