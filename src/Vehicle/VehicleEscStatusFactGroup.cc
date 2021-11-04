@@ -16,6 +16,7 @@ const char* VehicleEscStatusFactGroup::_efficiencyFactName =                    
 const char* VehicleEscStatusFactGroup::_gPerWFactName =                             "gPerW";
 const char* VehicleEscStatusFactGroup::_cmdHeightFactName =                         "cmdHeight";
 const char* VehicleEscStatusFactGroup::_estHeightFactName =                         "estHeight";
+const char* VehicleEscStatusFactGroup::_elevatorAngleFactName =                     "elevatorAngle";
 
 
 VehicleEscStatusFactGroup::VehicleEscStatusFactGroup(QObject* parent)
@@ -26,6 +27,7 @@ VehicleEscStatusFactGroup::VehicleEscStatusFactGroup(QObject* parent)
     , _gPerWFact                        (0, _gPerWFactName,                         FactMetaData::valueTypeFloat)
     , _cmdHeightFact                    (0, _cmdHeightFactName,                     FactMetaData::valueTypeFloat)
     , _estHeightFact                    (0, _estHeightFactName,                     FactMetaData::valueTypeFloat)
+    , _elevatorAngleFact                (0, _elevatorAngleFactName,                 FactMetaData::valueTypeFloat)
 
 {
     _addFact(&_rpmFact,                         _rpmFactName);
@@ -34,6 +36,7 @@ VehicleEscStatusFactGroup::VehicleEscStatusFactGroup(QObject* parent)
     _addFact(&_gPerWFact,                       _gPerWFactName);
     _addFact(&_cmdHeightFact,                   _cmdHeightFactName);
     _addFact(&_estHeightFact,                   _estHeightFactName);
+    _addFact(&_elevatorAngleFact,               _elevatorAngleFactName);
 }
 
 void VehicleEscStatusFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_message_t& message)
@@ -53,7 +56,8 @@ void VehicleEscStatusFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_me
     } else if (message.msgid == MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY) {
         mavlink_debug_float_array_t content;
         mavlink_msg_debug_float_array_decode(&message, &content);
-        cmdHeight()->setRawValue                    (content.data[33]);
-        estHeight()->setRawValue                    (content.data[34]);
+        cmdHeight()->setRawValue                    (content.data[50]);
+        estHeight()->setRawValue                    (content.data[51]);
+        elevatorAngle()->setRawValue                (content.data[36]*180/3.14159);
     }
 }

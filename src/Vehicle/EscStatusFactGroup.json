@@ -44,6 +44,13 @@
     "type":             "float",
     "decimalPlaces":    0,
     "default":          null
+},
+{
+    "name":             "elevatorAngle",
+    "shortDesc":        "Elevator Angle (deg)",
+    "type":             "float",
+    "decimalPlaces":    1,
+    "default":          null
 }
 ]
 }

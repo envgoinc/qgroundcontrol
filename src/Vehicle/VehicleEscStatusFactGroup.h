@@ -27,6 +27,7 @@ public:
     Q_PROPERTY(Fact* gPerW              READ gPerW              CONSTANT)
     Q_PROPERTY(Fact* cmdHeight          READ cmdHeight          CONSTANT)
     Q_PROPERTY(Fact* estHeight          READ estHeight          CONSTANT)
+    Q_PROPERTY(Fact* elevatorAngle      READ elevatorAngle      CONSTANT)
 
     Fact* rpm                           () { return &_rpmFact; }
     Fact* mechPwr                       () { return &_mechPwrFact; }
@@ -34,6 +35,7 @@ public:
     Fact* gPerW                         () { return &_gPerWFact; }
     Fact* cmdHeight                     () { return &_cmdHeightFact; }
     Fact* estHeight                     () { return &_estHeightFact; }
+    Fact* elevatorAngle                 () { return &_elevatorAngleFact; }
 
     // Overrides from FactGroup
     void handleMessage(Vehicle* vehicle, mavlink_message_t& message) override;
@@ -44,6 +46,7 @@ public:
     static const char* _gPerWFactName;
     static const char* _cmdHeightFactName;
     static const char* _estHeightFactName;
+    static const char* _elevatorAngleFactName;
 
 private:
     Fact _rpmFact;
@@ -52,4 +55,5 @@ private:
     Fact _gPerWFact;
     Fact _cmdHeightFact;
     Fact _estHeightFact;
+    Fact _elevatorAngleFact;
 };
