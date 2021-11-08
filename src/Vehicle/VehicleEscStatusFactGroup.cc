@@ -9,11 +9,13 @@
 
 #include "VehicleEscStatusFactGroup.h"
 #include "Vehicle.h"
+#include "math.h"
 
 const char* VehicleEscStatusFactGroup::_rpmFactName =                               "rpm";
 const char* VehicleEscStatusFactGroup::_mechPwrFactName =                           "mechPwr";
 const char* VehicleEscStatusFactGroup::_efficiencyFactName =                        "efficiency";
 const char* VehicleEscStatusFactGroup::_gPerWFactName =                             "gPerW";
+const char* VehicleEscStatusFactGroup::_desiredPitchFactName =                      "desiredPitch";
 const char* VehicleEscStatusFactGroup::_cmdHeightFactName =                         "cmdHeight";
 const char* VehicleEscStatusFactGroup::_estHeightFactName =                         "estHeight";
 const char* VehicleEscStatusFactGroup::_elevatorAngleFactName =                     "elevatorAngle";
@@ -25,6 +27,7 @@ VehicleEscStatusFactGroup::VehicleEscStatusFactGroup(QObject* parent)
     , _mechPwrFact                      (0, _mechPwrFactName,                       FactMetaData::valueTypeFloat)
     , _efficiencyFact                   (0, _efficiencyFactName,                    FactMetaData::valueTypeFloat)
     , _gPerWFact                        (0, _gPerWFactName,                         FactMetaData::valueTypeFloat)
+    , _desiredPitchFact                 (0, _desiredPitchFactName,                  FactMetaData::valueTypeFloat)
     , _cmdHeightFact                    (0, _cmdHeightFactName,                     FactMetaData::valueTypeFloat)
     , _estHeightFact                    (0, _estHeightFactName,                     FactMetaData::valueTypeFloat)
     , _elevatorAngleFact                (0, _elevatorAngleFactName,                 FactMetaData::valueTypeFloat)
@@ -34,6 +37,7 @@ VehicleEscStatusFactGroup::VehicleEscStatusFactGroup(QObject* parent)
     _addFact(&_mechPwrFact,                     _mechPwrFactName);
     _addFact(&_efficiencyFact,                  _efficiencyFactName);
     _addFact(&_gPerWFact,                       _gPerWFactName);
+    _addFact(&_desiredPitchFact,                    _desiredPitchFactName);
     _addFact(&_cmdHeightFact,                   _cmdHeightFactName);
     _addFact(&_estHeightFact,                   _estHeightFactName);
     _addFact(&_elevatorAngleFact,               _elevatorAngleFactName);
@@ -56,8 +60,9 @@ void VehicleEscStatusFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_me
     } else if (message.msgid == MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY) {
         mavlink_debug_float_array_t content;
         mavlink_msg_debug_float_array_decode(&message, &content);
-        cmdHeight()->setRawValue                    (content.data[50]);
-        estHeight()->setRawValue                    (content.data[51]);
-        elevatorAngle()->setRawValue                (content.data[36]*180/3.14159);
+        desiredPitch()->setRawValue                 (content.data[10] * 180 / M_PI);
+        cmdHeight()->setRawValue                    (content.data[50] * 100);
+        estHeight()->setRawValue                    (content.data[51] * 100);
+        elevatorAngle()->setRawValue                (content.data[36] * 180 / M_PI);
     }
 }

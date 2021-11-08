@@ -12,7 +12,7 @@
 },
 {
     "name":             "mechPwr",
-    "shortDesc":        "Mech Power",
+    "shortDesc":        "Mech Power (W)",
     "type":             "float",
     "decimalPlaces":    0,
     "default":          null
@@ -28,21 +28,28 @@
     "name":             "gPerW",
     "shortDesc":        "Grams per Watt",
     "type":             "float",
-    "decimalPlaces":    0,
+    "decimalPlaces":    1,
+    "default":          null
+},
+{
+    "name":             "desiredPitch",
+    "shortDesc":        "Desired Pitch (deg)",
+    "type":             "float",
+    "decimalPlaces":    1,
     "default":          null
 },
 {
     "name":             "cmdHeight",
-    "shortDesc":        "Cmd Height (m)",
+    "shortDesc":        "Cmd Height (cm)",
     "type":             "float",
-    "decimalPlaces":    0,
+    "decimalPlaces":    1,
     "default":          null
 },
 {
     "name":             "estHeight",
-    "shortDesc":        "Est Height (m)",
+    "shortDesc":        "Est Height (cm)",
     "type":             "float",
-    "decimalPlaces":    0,
+    "decimalPlaces":    1,
     "default":          null
 },
 {

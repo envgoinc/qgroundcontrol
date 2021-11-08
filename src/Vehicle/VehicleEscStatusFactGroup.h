@@ -25,6 +25,7 @@ public:
     Q_PROPERTY(Fact* mechPwr            READ mechPwr            CONSTANT)
     Q_PROPERTY(Fact* efficiency         READ efficiency         CONSTANT)
     Q_PROPERTY(Fact* gPerW              READ gPerW              CONSTANT)
+    Q_PROPERTY(Fact* desiredPitch       READ desiredPitch       CONSTANT)
     Q_PROPERTY(Fact* cmdHeight          READ cmdHeight          CONSTANT)
     Q_PROPERTY(Fact* estHeight          READ estHeight          CONSTANT)
     Q_PROPERTY(Fact* elevatorAngle      READ elevatorAngle      CONSTANT)
@@ -33,6 +34,7 @@ public:
     Fact* mechPwr                       () { return &_mechPwrFact; }
     Fact* efficiency                    () { return &_efficiencyFact; }
     Fact* gPerW                         () { return &_gPerWFact; }
+    Fact* desiredPitch                  () { return &_desiredPitchFact; }
     Fact* cmdHeight                     () { return &_cmdHeightFact; }
     Fact* estHeight                     () { return &_estHeightFact; }
     Fact* elevatorAngle                 () { return &_elevatorAngleFact; }
@@ -44,6 +46,7 @@ public:
     static const char* _mechPwrFactName;
     static const char* _efficiencyFactName;
     static const char* _gPerWFactName;
+    static const char* _desiredPitchFactName;
     static const char* _cmdHeightFactName;
     static const char* _estHeightFactName;
     static const char* _elevatorAngleFactName;
@@ -53,6 +56,7 @@ private:
     Fact _mechPwrFact;
     Fact _efficiencyFact;
     Fact _gPerWFact;
+    Fact _desiredPitchFact;
     Fact _cmdHeightFact;
     Fact _estHeightFact;
     Fact _elevatorAngleFact;
