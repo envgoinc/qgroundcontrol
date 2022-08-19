@@ -30,7 +30,7 @@ ColumnLayout {
             id: my_graph
             property string name: qsTr("")
             property var plot: [
-                { name: "Distance Traveled", value: globals.activeVehicle.flightDistance.value }
+                { name: "Flight Distance", value: globals.activeVehicle.flightDistance.value }
             ]
         }
 

@@ -70,12 +70,12 @@ void EnvgoPlotClass::paint(QPainter* painter)
 // data is a vector of size 10, where
 //      data[0] = time
 //      data[1] = average speed
-//      data[2] = distance travelled
+//      data[2] = flight distance
 //      data[3] = remaining battery
 //      data[4] = height above water
 //      data[5] = temperature
 //      data[6] = motor temperature
-//      data[7] = motor controller temperature
+//      data[7] = controller temperature
 //      data[8] = battery temperature
 //      data[9] = servo temperature
 void EnvgoPlotClass::add_data(QVector<double> data)

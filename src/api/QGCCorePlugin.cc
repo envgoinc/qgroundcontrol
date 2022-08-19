@@ -302,7 +302,6 @@ void QGCCorePlugin::factValueGridCreateDefaultSettings(const QString& defaultSet
     factValueGrid.appendColumn();
     
     factValueGrid.appendRow();
-    factValueGrid.appendRow();
 
 
     int                 rowIndex    = 0;
@@ -310,101 +309,61 @@ void QGCCorePlugin::factValueGridCreateDefaultSettings(const QString& defaultSet
 
     // row 0 column 0
     InstrumentValueData* value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("Temperature", "temperature1"); // envgofactgroup gear
-    // value->setIcon("arrow-thick-up.svg");
+    value->setFact("Vehicle", "GroundSpeed"); // rolling avg speed
     value->setText(value->fact()->shortDescription());
     value->setShowUnits(true);
 
-    value = column->value<InstrumentValueData*>(rowIndex++);
     // row 1 column 0
-    value->setFact("Vehicle", "FlightTime");
-    value->setIcon("timer.svg");
-    value->setText("Travel time");
-    value->setShowUnits(false);
-
-    // row 2 column 0
-    /*
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("EnvgoFactGroup", "motorTemperature");
-    // value->setIcon("bookmark copy 3.svg");
+    value->setFact("Vehicle", "Roll"); // motor temperature
     value->setText(value->fact()->shortDescription());
     value->setShowUnits(true);
-    */
 
     rowIndex    = 0;
     column      = factValueGrid.columns()->value<QmlObjectListModel*>(1);
-    /*
+
     // row 0 column 1
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("EnvgoFactGroup", "heightAboveWater");
-    value->setIcon("arrow-base-up.svg");
+    value->setFact("Vehicle", "Roll"); // height above water
     value->setText(value->fact()->shortDescription());
     value->setShowUnits(true);
 
     // row 1 column 1
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("Vehicle", "FlightDistance");
-    // value->setIcon("bookmark copy 3.svg");
-    value->setText("Distance travelled");
-    value->setShowUnits(true);
-
-    // row 2 column 1
-    value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("EnvgoFactGroup", "motorCtrlTemperature");
-    // value->setIcon("bookmark copy 3.svg");
+    value->setFact("Vehicle", "Roll"); // controller temperature
     value->setText(value->fact()->shortDescription());
     value->setShowUnits(true);
-    */
 
     rowIndex    = 0;
     column      = factValueGrid.columns()->value<QmlObjectListModel*>(2);
-    /*
+
     // row 0 column 2
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("EnvgoFactGroup", "averageSpeed");
-    // value->setIcon("arrow-thick-up.svg");
+    value->setFact("Vehicle", "FlightDistance");
     value->setText(value->fact()->shortDescription());
     value->setShowUnits(true);
 
     // row 1 column 2
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("EnvgoFactGroup", "curTemperature");
-    // value->setIcon("bookmark copy 3.svg");
+    value->setFact("Vehicle", "Roll"); // battery temperature
     value->setText(value->fact()->shortDescription());
     value->setShowUnits(true);
 
-    // row 2 column 2
-    value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("EnvgoFactGroup", "batteryTemperature");
-    // value->setIcon("bookmark copy 3.svg");
-    value->setText(value->fact()->shortDescription());
-    value->setShowUnits(true);
-    */
     rowIndex    = 0;
-    column      = factValueGrid.columns()->value<QmlObjectListModel*>(2);
+    column      = factValueGrid.columns()->value<QmlObjectListModel*>(3);
 
-    /*
     // row 0 column 3
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("EnvgoFactGroup", "travelDirection");
-    value->setIcon("arrow-thick-up.svg");
+    value->setFact("Vehicle", "FlightTime");
     value->setText(value->fact()->shortDescription());
     value->setShowUnits(true);
 
     // row 1 column 3
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("Vehicle", "DistanceToHome");
-    value->setIcon("bookmark copy 3.svg");
+    value->setFact("Vehicle", "Roll"); // servo temperature
     value->setText(value->fact()->shortDescription());
     value->setShowUnits(true);
 
-    // row 2 column 3
-    value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("EnvgoFactGroup", "servoTemperature");
-    // value->setIcon("bookmark copy 3.svg");
-    value->setText(value->fact()->shortDescription());
-    value->setShowUnits(true);
-    */
 }
 
 QQmlApplicationEngine* QGCCorePlugin::createQmlApplicationEngine(QObject* parent)

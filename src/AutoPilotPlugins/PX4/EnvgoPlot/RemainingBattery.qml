@@ -30,7 +30,7 @@ ColumnLayout {
             id: my_graph
             property string name: qsTr("")
             property var plot: [
-                { name: "Remaining Battery", value: globals.activeVehicle.rollRate.value } // here!
+                { name: "Remaining Battery", value: battery.percentRemaining.rawValue } // here!
             ]
         }
 

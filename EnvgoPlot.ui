@@ -47,7 +47,7 @@
    </item>
    <item>
     <property name="text">
-     <string>Distance Travelled</string>
+     <string>Flight Distance</string>
     </property>
    </item>
    <item>
@@ -72,7 +72,7 @@
    </item>
    <item>
     <property name="text">
-     <string>Motor controller temperature</string>
+     <string>Controller temperature</string>
     </property>
    </item>
    <item>

@@ -22,7 +22,7 @@
 },
 {
     "name":             "motorCtrlTemperature",
-    "shortDesc":        "Motor Controller Temperature",
+    "shortDesc":        "Controller Temperature",
     "type":             "float",
     "decimalPlaces":    2,
     "units":            "C",
@@ -79,7 +79,7 @@
 // Distance travelled
 {
     "name":             "distanceTravelled",
-    "shortDesc":        "Distance Travelled",
+    "shortDesc":        "Flight Distance",
     "type":             "double",
     "decimalPlaces":    1,
     "units":            "km",
@@ -101,7 +101,7 @@
 // Travel time
 {
     "name":             "timeTravelled",
-    "shortDesc":        "Time Travelled",
+    "shortDesc":        "Flight Time",
     "type":             "string",
     "units":            "hh:mm:ss",
     "default":          null

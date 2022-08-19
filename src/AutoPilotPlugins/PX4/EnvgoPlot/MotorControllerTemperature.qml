@@ -30,7 +30,7 @@ ColumnLayout {
             id: my_graph
             property string name: qsTr("")
             property var plot: [
-                { name: "Motor Controller Temperature", value: globals.activeVehicle.rollRate.value } // here!
+                { name: "Controller Temperature", value: globals.activeVehicle.rollRate.value } // here!
             ]
         }
 

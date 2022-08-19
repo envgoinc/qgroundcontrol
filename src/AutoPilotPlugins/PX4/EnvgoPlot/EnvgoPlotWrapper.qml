@@ -57,7 +57,7 @@ Item {
                 text: "Average speed"
             }
             ListElement {
-                text: "Distance traveled"
+                text: "Flight Distance"
             }
             ListElement {
                 text: "Remaining battery"
@@ -72,7 +72,7 @@ Item {
                 text: "Motor temperature"
             }
             ListElement {
-                text: "Motor controller temperature"
+                text: "Controller temperature"
             }
             ListElement {
                 text: "Battery temperature"
