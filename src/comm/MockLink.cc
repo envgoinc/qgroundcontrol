@@ -463,7 +463,7 @@ void MockLink::_sendBatteryStatus(void)
     mavlink_message_t   msg;
     uint16_t            rgVoltages[10];
     uint16_t            rgVoltagesNone[10];
-    uint16_t            rgVoltagesExtNone[4];
+    uint16_t            rgVoltagesExtNone[26];
 
     for (int i=0; i<10; i++) {
         rgVoltages[i]       = UINT16_MAX;
