@@ -1,9 +1,13 @@
-name: Android Release
+# The 32 and 64 bit version of these actions should be kept in sync
+name: Android 32/64-bit Release
 
 on:
   push:
     branches:
-    - 'master'
+      - 'master'
+      - 'Stable*'
+    tags:
+      - 'v*'
   pull_request:
     branches:
     - '*'
@@ -15,10 +19,21 @@ defaults:
 env:
   SOURCE_DIR:   ${{ github.workspace }}
   QT_VERSION:   5.15.2
+  BUILD_TYPE:   ${{ fromJSON('["DailyBuild", "StableBuild"]')[ github.ref_type == 'tag' || contains(github.ref, 'Stable_' ) ] }}
 
 jobs:
   build:
     runs-on:  ubuntu-20.04
+
+    strategy:
+      matrix:
+       include:
+         - architecture: 32bits
+           eabi: armeabi-v7a
+           ARTIFACT: QGroundControl32.apk
+         - architecture: 64bits
+           eabi: arm64-v8a
+           ARTIFACT: QGroundControl64.apk
 
     steps:
       - name: Checkout repo
@@ -29,11 +44,10 @@ jobs:
       - name: Get all tags for correct version determination
         working-directory:  ${{ github.workspace }}
         run: |
-          git fetch --unshallow
-          git fetch --all --tags
+          git fetch --all --tags -f
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
           version:      ${{ env.QT_VERSION }}
           host:         linux
@@ -41,6 +55,13 @@ jobs:
           dir:          ${{ runner.temp }}
           modules:      qtcharts
           setup-python: true
+
+      - name: Install Android NDK
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r21e
+          add-to-path: false
 
       - name: Install ccache
         run:  sudo apt-get install ccache
@@ -78,6 +99,7 @@ jobs:
             mkdir gstreamer-1.0-android-universal-1.18.5
             tar xf gstreamer-1.0-android-universal-1.18.5.tar.xz -C gstreamer-1.0-android-universal-1.18.5
 
+      # This will set GIT_BRANCH_NAME environment variable
       - name: Git branch name
         id:   git-branch-name
         uses: EthanSK/git-branch-name-action@v1
@@ -92,16 +114,35 @@ jobs:
         working-directory: ${{ runner.temp }}/shadow_build_dir
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_NDK_LATEST_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
         run:  |
-            if [ $GIT_BRANCH_NAME == "Stable*" ]; then
-              echo "Stable build" &&
-              export STABLE_OR_DAILY=StableBuild;
-            else
-              echo "Daily build" &&
-              export STABLE_OR_DAILY=DailyBuild;
-            fi
-            qmake -r ${SOURCE_DIR}/qgroundcontrol.pro -spec android-clang CONFIG+=${STABLE_OR_DAILY} ANDROID_ABIS="armeabi-v7a arm64-v8a"
-            make -j2 aab
+            qmake -r ${SOURCE_DIR}/qgroundcontrol.pro -spec android-clang CONFIG+=${BUILD_TYPE} CONFIG+=installer ANDROID_ABIS="${{ matrix.eabi }}"
+            make -j2
 
       - name: ccache post-run
         run:  ccache -s
+
+      - name: Save artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ matrix.ARTIFACT }}
+          path: ${{ runner.temp }}/shadow_build_dir/package/${{ matrix.ARTIFACT }}
+
+      - name: Upload build to S3 Bucket
+        if:                 github.event_name == 'push'
+        working-directory:  ${{ runner.temp }}/shadow_build_dir/package
+        run: |
+              aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+              aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              aws s3 cp ${{ matrix.ARTIFACT }} s3://qgroundcontrol/builds/${GIT_BRANCH_NAME}/${{ matrix.ARTIFACT }} --region us-west-2 --acl public-read
+
+      - name: Upload tagged stable build to S3 latest Bucket
+        if:                 github.event_name == 'push' && github.ref_type == 'tag'
+        working-directory:  ${{ runner.temp }}/shadow_build_dir/package
+        run: |
+              aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+              aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              aws s3 cp ${{ matrix.ARTIFACT }} s3://qgroundcontrol/latest/${{ matrix.ARTIFACT }} --region us-west-2 --acl public-read

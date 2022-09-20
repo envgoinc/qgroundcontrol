@@ -39,13 +39,16 @@
 #include "VehicleVibrationFactGroup.h"
 #include "VehicleEscStatusFactGroup.h"
 #include "VehicleEstimatorStatusFactGroup.h"
+#include "VehicleHygrometerFactGroup.h"
 #include "VehicleLinkManager.h"
 #include "MissionManager.h"
 #include "GeoFenceManager.h"
 #include "RallyPointManager.h"
 #include "FTPManager.h"
 #include "ImageProtocolManager.h"
+#include "HealthAndArmingCheckReport.h"
 
+class Actuators;
 class EventHandler;
 class UAS;
 class UASInterface;
@@ -269,6 +272,8 @@ public:
     Q_PROPERTY(bool     roiModeSupported        READ roiModeSupported                               CONSTANT)                   ///< Orbit mode is supported by this vehicle
     Q_PROPERTY(bool     takeoffVehicleSupported READ takeoffVehicleSupported                        CONSTANT)                   ///< Guided takeoff supported
     Q_PROPERTY(QString  gotoFlightMode          READ gotoFlightMode                                 CONSTANT)                   ///< Flight mode vehicle is in while performing goto
+    Q_PROPERTY(bool     haveMRSpeedLimits       READ haveMRSpeedLimits                              NOTIFY haveMRSpeedLimChanged)
+    Q_PROPERTY(bool     haveFWSpeedLimits       READ haveFWSpeedLimits                              NOTIFY haveFWSpeedLimChanged)
 
     Q_PROPERTY(ParameterManager*        parameterManager    READ parameterManager   CONSTANT)
     Q_PROPERTY(VehicleLinkManager*      vehicleLinkManager  READ vehicleLinkManager CONSTANT)
@@ -314,7 +319,10 @@ public:
     Q_PROPERTY(FactGroup*           distanceSensors READ distanceSensorFactGroup    CONSTANT)
     Q_PROPERTY(FactGroup*           localPosition   READ localPositionFactGroup     CONSTANT)
     Q_PROPERTY(FactGroup*           localPositionSetpoint READ localPositionSetpointFactGroup CONSTANT)
+    Q_PROPERTY(FactGroup*           hygrometer      READ hygrometerFactGroup        CONSTANT)
     Q_PROPERTY(QmlObjectListModel*  batteries       READ batteries                  CONSTANT)
+    Q_PROPERTY(Actuators*           actuators       READ actuators                  CONSTANT)
+    Q_PROPERTY(HealthAndArmingCheckReport* healthAndArmingCheckReport READ healthAndArmingCheckReport CONSTANT)
 
     Q_PROPERTY(int      firmwareMajorVersion        READ firmwareMajorVersion       NOTIFY firmwareVersionChanged)
     Q_PROPERTY(int      firmwareMinorVersion        READ firmwareMinorVersion       NOTIFY firmwareVersionChanged)
@@ -348,6 +356,15 @@ public:
     /// @return The minimum takeoff altitude (relative) for guided takeoff.
     Q_INVOKABLE double minimumTakeoffAltitude();
 
+    /// @return Maximum horizontal speed multirotor.
+    Q_INVOKABLE double maximumHorizontalSpeedMultirotor();
+
+    /// @return Maximum equivalent airspeed.
+    Q_INVOKABLE double maximumEquivalentAirspeed();
+
+    /// @return Minumum equivalent airspeed.
+    Q_INVOKABLE double minimumEquivalentAirspeed();
+
     /// Command vehicle to move to specified location (altitude is included and relative)
     Q_INVOKABLE void guidedModeGotoLocation(const QGeoCoordinate& gotoCoord);
 
@@ -355,6 +372,13 @@ public:
     ///     @param altitudeChange If > 0, go up by amount specified, if < 0, go down by amount specified
     ///     @param pauseVehicle true: pause vehicle prior to altitude change
     Q_INVOKABLE void guidedModeChangeAltitude(double altitudeChange, bool pauseVehicle);
+
+    /// Command vehicle to change groundspeed
+    ///     @param groundspeed Target horizontal groundspeed
+    Q_INVOKABLE void guidedModeChangeGroundSpeed   (double groundspeed);
+    /// Command vehicle to change equivalent airspeed
+    ///     @param airspeed Target equivalent airspeed
+    Q_INVOKABLE void guidedModeChangeEquivalentAirspeed   (double airspeed);
 
     /// Command vehicle to orbit given center point
     ///     @param centerCoord Orit around this point
@@ -440,6 +464,9 @@ public:
     bool    roiModeSupported        () const;
     bool    takeoffVehicleSupported () const;
     QString gotoFlightMode          () const;
+
+    bool haveMRSpeedLimits() const { return _multirotor_speed_limits_available; }
+    bool haveFWSpeedLimits() const { return _fixed_wing_airspeed_limits_available; }
 
     // Property accessors
 
@@ -592,6 +619,7 @@ public:
     QObject*        sysStatusSensorInfo         () { return &_sysStatusSensorInfo; }
     bool            requiresGpsFix              () const { return static_cast<bool>(_onboardControlSensorsPresent & SysStatusSensorGPS); }
     bool            hilMode                     () const { return _base_mode & MAV_MODE_FLAG_HIL_ENABLED; }
+    Actuators*      actuators                   () const { return _actuators; }
 
     /// Get the maximum MAVLink protocol version supported
     /// @return the maximum version
@@ -610,10 +638,11 @@ public:
         CalibrationAPMPreFlight,
         CalibrationPX4Airspeed,
         CalibrationPX4Pressure,
+        CalibrationAPMAccelSimple,
     };
 
     void startCalibration   (CalibrationType calType);
-    void stopCalibration    (void);
+    void stopCalibration    (bool showError);
 
     void startUAVCANBusConfig(void);
     void stopUAVCANBusConfig(void);
@@ -655,6 +684,7 @@ public:
     FactGroup* escStatusFactGroup           () { return &_escStatusFactGroup; }
     FactGroup* estimatorStatusFactGroup     () { return &_estimatorStatusFactGroup; }
     FactGroup* terrainFactGroup             () { return &_terrainFactGroup; }
+    FactGroup* hygrometerFactGroup          () { return &_hygrometerFactGroup; }
     QmlObjectListModel* batteries           () { return &_batteryFactGroupListModel; }
 
     MissionManager*                 missionManager      () { return _missionManager; }
@@ -823,6 +853,9 @@ public:
     double loadProgress                 () const { return _loadProgress; }
 
     void setEventsMetadata(uint8_t compid, const QString& metadataJsonFileName, const QString& translationJsonFileName);
+    void setActuatorsMetadata(uint8_t compid, const QString& metadataJsonFileName, const QString& translationJsonFileName);
+
+    HealthAndArmingCheckReport* healthAndArmingCheckReport() { return &_healthAndArmingCheckReport; }
 
 public slots:
     void setVtolInFwdFlight                 (bool vtolInFwdFlight);
@@ -888,6 +921,8 @@ signals:
     void readyToFlyChanged              (bool readyToFy);
     void allSensorsHealthyChanged       (bool allSensorsHealthy);
     void requiresGpsFixChanged          ();
+    void haveMRSpeedLimChanged          ();
+    void haveFWSpeedLimChanged          ();
 
     void firmwareVersionChanged         ();
     void firmwareCustomVersionChanged   ();
@@ -957,6 +992,7 @@ private slots:
     void _updateMissionItemIndex            ();
     void _updateHeadingToNextWP             ();
     void _updateDistanceToGCS               ();
+    void _updateHomepoint                   ();
     void _updateHobbsMeter                  ();
     void _vehicleParamLoaded                (bool ready);
     void _sendQGCTimeToVehicle              ();
@@ -1192,6 +1228,7 @@ private:
     static const int _orbitTelemetryTimeoutMsecs = 3000; // No telemetry for this amount and orbit will go inactive
 
     QMap<uint8_t, QSharedPointer<EventHandler>> _events; ///< One protocol handler for each component ID
+    HealthAndArmingCheckReport _healthAndArmingCheckReport;
 
     MAVLinkStreamConfig _mavlinkStreamConfig;
 
@@ -1264,10 +1301,15 @@ private:
     void _sendMavCommandFromList(int index);
     int  _findMavCommandListEntryIndex(int targetCompId, MAV_CMD command);
     bool _sendMavCommandShouldRetry(MAV_CMD command);
+    bool _commandCanBeDuplicated(MAV_CMD command);
 
     QMap<uint8_t /* batteryId */, uint8_t /* MAV_BATTERY_CHARGE_STATE_OK */> _lowestBatteryChargeStateAnnouncedMap;
 
     float _altitudeTuningOffset = qQNaN(); // altitude offset, so the plotted value is around 0
+
+    // these flags are used to determine if the speed change action from fly view should be shown
+    bool _multirotor_speed_limits_available = false;
+    bool _fixed_wing_airspeed_limits_available = false;
 
     // FactGroup facts
 
@@ -1308,6 +1350,7 @@ private:
     VehicleLocalPositionSetpointFactGroup _localPositionSetpointFactGroup;
     VehicleEscStatusFactGroup       _escStatusFactGroup;
     VehicleEstimatorStatusFactGroup _estimatorStatusFactGroup;
+    VehicleHygrometerFactGroup      _hygrometerFactGroup;
     TerrainFactGroup                _terrainFactGroup;
     QmlObjectListModel              _batteryFactGroupListModel;
 
@@ -1320,6 +1363,7 @@ private:
     FTPManager*                     _ftpManager                 = nullptr;
     ImageProtocolManager*           _imageProtocolManager       = nullptr;
     InitialConnectStateMachine*     _initialConnectStateMachine = nullptr;
+    Actuators*                      _actuators                  = nullptr;
 
     static const char* _rollFactName;
     static const char* _pitchFactName;
@@ -1358,6 +1402,7 @@ private:
     static const char* _localPositionSetpointFactGroupName;
     static const char* _escStatusFactGroupName;
     static const char* _estimatorStatusFactGroupName;
+    static const char* _hygrometerFactGroupName;
     static const char* _terrainFactGroupName;
 
     static const int _vehicleUIUpdateRateMSecs      = 100;

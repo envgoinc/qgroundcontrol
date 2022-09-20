@@ -48,6 +48,7 @@ private slots:
 
 private:
     static void _stateRequestCompInfo           (StateMachine* stateMachine);
+    static void _stateRequestCompInfoDeprecated (StateMachine* stateMachine);
     static void _stateRequestMetaDataJson       (StateMachine* stateMachine);
     static void _stateRequestMetaDataJsonFallback(StateMachine* stateMachine);
     static void _stateRequestTranslationJson    (StateMachine* stateMachine);
@@ -111,6 +112,7 @@ private:
     static void _stateRequestCompInfoGeneralComplete(StateMachine* stateMachine);
     static void _stateRequestCompInfoParam          (StateMachine* stateMachine);
     static void _stateRequestCompInfoEvents         (StateMachine* stateMachine);
+    static void _stateRequestCompInfoActuators      (StateMachine* stateMachine);
     static void _stateRequestAllCompInfoComplete    (StateMachine* stateMachine);
 
     Vehicle*                        _vehicle                    = nullptr;

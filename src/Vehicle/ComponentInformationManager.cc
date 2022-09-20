@@ -15,6 +15,7 @@
 #include "CompInfoGeneral.h"
 #include "CompInfoParam.h"
 #include "CompInfoEvents.h"
+#include "CompInfoActuators.h"
 #include "QGCFileDownload.h"
 #include "QGCApplication.h"
 
@@ -29,6 +30,7 @@ const ComponentInformationManager::StateFn ComponentInformationManager::_rgState
     ComponentInformationManager::_stateRequestCompInfoGeneralComplete,
     ComponentInformationManager::_stateRequestCompInfoParam,
     ComponentInformationManager::_stateRequestCompInfoEvents,
+    ComponentInformationManager::_stateRequestCompInfoActuators,
     ComponentInformationManager::_stateRequestAllCompInfoComplete
 };
 
@@ -36,6 +38,7 @@ const int ComponentInformationManager::_cStates = sizeof(ComponentInformationMan
 
 const RequestMetaDataTypeStateMachine::StateFn RequestMetaDataTypeStateMachine::_rgStates[]= {
     RequestMetaDataTypeStateMachine::_stateRequestCompInfo,
+    RequestMetaDataTypeStateMachine::_stateRequestCompInfoDeprecated,
     RequestMetaDataTypeStateMachine::_stateRequestMetaDataJson,
     RequestMetaDataTypeStateMachine::_stateRequestMetaDataJsonFallback,
     RequestMetaDataTypeStateMachine::_stateRequestTranslationJson,
@@ -52,6 +55,7 @@ ComponentInformationManager::ComponentInformationManager(Vehicle* vehicle)
     _compInfoMap[MAV_COMP_ID_AUTOPILOT1][COMP_METADATA_TYPE_GENERAL]    = new CompInfoGeneral   (MAV_COMP_ID_AUTOPILOT1, vehicle, this);
     _compInfoMap[MAV_COMP_ID_AUTOPILOT1][COMP_METADATA_TYPE_PARAMETER]  = new CompInfoParam     (MAV_COMP_ID_AUTOPILOT1, vehicle, this);
     _compInfoMap[MAV_COMP_ID_AUTOPILOT1][COMP_METADATA_TYPE_EVENTS]     = new CompInfoEvents    (MAV_COMP_ID_AUTOPILOT1, vehicle, this);
+    _compInfoMap[MAV_COMP_ID_AUTOPILOT1][COMP_METADATA_TYPE_ACTUATORS]  = new CompInfoActuators (MAV_COMP_ID_AUTOPILOT1, vehicle, this);
 }
 
 int ComponentInformationManager::stateCount(void) const
@@ -136,6 +140,18 @@ void ComponentInformationManager::_stateRequestCompInfoEvents(StateMachine* stat
     }
 }
 
+void ComponentInformationManager::_stateRequestCompInfoActuators(StateMachine* stateMachine)
+{
+    ComponentInformationManager* compMgr = static_cast<ComponentInformationManager*>(stateMachine);
+
+    if (compMgr->_isCompTypeSupported(COMP_METADATA_TYPE_ACTUATORS)) {
+        compMgr->_requestTypeStateMachine.request(compMgr->_compInfoMap[MAV_COMP_ID_AUTOPILOT1][COMP_METADATA_TYPE_ACTUATORS]);
+    } else {
+        qCDebug(ComponentInformationManagerLog) << "_stateRequestCompInfoActuators skipping, not supported";
+        compMgr->advance();
+    }
+}
+
 void ComponentInformationManager::_stateRequestAllCompInfoComplete(StateMachine* stateMachine)
 {
     ComponentInformationManager* compMgr = static_cast<ComponentInformationManager*>(stateMachine);
@@ -208,6 +224,7 @@ QString RequestMetaDataTypeStateMachine::typeToString(void)
         case COMP_METADATA_TYPE_COMMANDS: return "COMP_METADATA_TYPE_COMMANDS";
         case COMP_METADATA_TYPE_PERIPHERALS: return "COMP_METADATA_TYPE_PERIPHERALS";
         case COMP_METADATA_TYPE_EVENTS: return "COMP_METADATA_TYPE_EVENTS";
+        case COMP_METADATA_TYPE_ACTUATORS: return "COMP_METADATA_TYPE_ACTUATORS";
         default: break;
     }
     return "Unknown";
@@ -218,10 +235,22 @@ static void _requestMessageResultHandler(void* resultHandlerData, MAV_RESULT res
     RequestMetaDataTypeStateMachine* requestMachine = static_cast<RequestMetaDataTypeStateMachine*>(resultHandlerData);
 
     if (result == MAV_RESULT_ACCEPTED) {
+        mavlink_component_metadata_t componentMetadata;
+        mavlink_msg_component_metadata_decode(&message, &componentMetadata);
+        requestMachine->compInfo()->setUriMetaData(componentMetadata.uri, componentMetadata.file_crc);
+    } // else: try deprecated COMPONENT_INFORMATION
+
+    requestMachine->advance();
+}
+
+static void _requestMessageResultHandlerDeprecated(void* resultHandlerData, MAV_RESULT result, Vehicle::RequestMessageResultHandlerFailureCode_t failureCode, const mavlink_message_t &message)
+{
+    RequestMetaDataTypeStateMachine* requestMachine = static_cast<RequestMetaDataTypeStateMachine*>(resultHandlerData);
+
+    if (result == MAV_RESULT_ACCEPTED) {
         mavlink_component_information_t componentInformation;
         mavlink_msg_component_information_decode(&message, &componentInformation);
         requestMachine->compInfo()->setUriMetaData(componentInformation.general_metadata_uri, componentInformation.general_metadata_file_crc);
-        // TODO: handle peripherals
     } else {
         switch (failureCode) {
         case Vehicle::RequestMessageFailureCommandError:
@@ -260,9 +289,44 @@ void RequestMetaDataTypeStateMachine::_stateRequestCompInfo(StateMachine* stateM
             qCDebug(ComponentInformationManagerLog) << QStringLiteral("_stateRequestCompInfo Skipping component information %1 request due to link type").arg(requestMachine->typeToString());
             stateMachine->advance();
         } else {
-            qCDebug(ComponentInformationManagerLog) << "Requesting component information" << requestMachine->typeToString();
+            qCDebug(ComponentInformationManagerLog) << "Requesting component metadata" << requestMachine->typeToString();
             vehicle->requestMessage(
                         _requestMessageResultHandler,
+                        stateMachine,
+                        MAV_COMP_ID_AUTOPILOT1,
+                        MAVLINK_MSG_ID_COMPONENT_METADATA);
+        }
+    }
+}
+
+void RequestMetaDataTypeStateMachine::_stateRequestCompInfoDeprecated(StateMachine* stateMachine)
+{
+    RequestMetaDataTypeStateMachine*    requestMachine  = static_cast<RequestMetaDataTypeStateMachine*>(stateMachine);
+    Vehicle*                            vehicle         = requestMachine->_compMgr->vehicle();
+    WeakLinkInterfacePtr                weakLink        = vehicle->vehicleLinkManager()->primaryLink();
+
+    if (requestMachine->_compInfo->type != COMP_METADATA_TYPE_GENERAL) {
+        requestMachine->advance();
+        return;
+    }
+    if (requestMachine->_compInfo->crcMetaDataValid()) {
+        qCDebug(ComponentInformationManagerLog) << "COMPONENT_METADATA available, skipping COMPONENT_INFORMATION";
+        requestMachine->advance();
+        return;
+    }
+
+    if (weakLink.expired()) {
+        qCDebug(ComponentInformationManagerLog) << QStringLiteral("_stateRequestCompInfo Skipping component information %1 request due to no primary link").arg(requestMachine->typeToString());
+        stateMachine->advance();
+    } else {
+        SharedLinkInterfacePtr sharedLink = weakLink.lock();
+        if (sharedLink->linkConfiguration()->isHighLatency() || sharedLink->isPX4Flow() || sharedLink->isLogReplay()) {
+            qCDebug(ComponentInformationManagerLog) << QStringLiteral("_stateRequestCompInfo Skipping component information %1 request due to link type").arg(requestMachine->typeToString());
+            stateMachine->advance();
+        } else {
+            qCDebug(ComponentInformationManagerLog) << "Requesting component information" << requestMachine->typeToString();
+            vehicle->requestMessage(
+                        _requestMessageResultHandlerDeprecated,
                         stateMachine,
                         MAV_COMP_ID_AUTOPILOT1,
                         MAVLINK_MSG_ID_COMPONENT_INFORMATION);
@@ -419,11 +483,9 @@ void RequestMetaDataTypeStateMachine::_stateRequestTranslationJson(StateMachine*
 {
     RequestMetaDataTypeStateMachine*    requestMachine  = static_cast<RequestMetaDataTypeStateMachine*>(stateMachine);
     CompInfo*                           compInfo        = requestMachine->compInfo();
-    const QString                       fileTag         = ComponentInformationManager::_getFileCacheTag(
-            compInfo->type, compInfo->crcTranslation(), true);
     const QString                       uri             = compInfo->uriTranslation();
-    requestMachine->_jsonTranslationCrcValid            = compInfo->crcTranslationValid();
-    requestMachine->_requestFile(fileTag, compInfo->crcTranslationValid(), uri, requestMachine->_jsonTranslationFileName);
+    // TODO: enable caching for translations
+    requestMachine->_requestFile("", false, uri, requestMachine->_jsonTranslationFileName);
 }
 
 void RequestMetaDataTypeStateMachine::_stateRequestComplete(StateMachine* stateMachine)

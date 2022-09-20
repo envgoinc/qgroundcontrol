@@ -1,4 +1,6 @@
 
+add_subdirectory(Actuators)
+
 set(EXTRA_SRC)
 if(BUILD_TESTING)
 	list(APPEND EXTRA_SRC
@@ -20,6 +22,8 @@ add_library(Vehicle
 	Autotune.h
 	CompInfo.cc
 	CompInfo.h
+	CompInfoActuators.cc
+	CompInfoActuators.h
 	CompInfoEvents.cc
 	CompInfoEvents.h
 	CompInfoParam.cc
@@ -36,8 +40,8 @@ add_library(Vehicle
 	FTPManager.h
 	GPSRTKFactGroup.cc
 	GPSRTKFactGroup.h
-	HealthAndArmingChecks.cc
-	HealthAndArmingChecks.h
+	HealthAndArmingCheckReport.cc
+	HealthAndArmingCheckReport.h
 	ImageProtocolManager.cc
 	ImageProtocolManager.h
 	InitialConnectStateMachine.cc
@@ -90,16 +94,20 @@ add_library(Vehicle
 	VehicleVibrationFactGroup.h
 	VehicleWindFactGroup.cc
 	VehicleWindFactGroup.h
+        VehicleHygrometerFactGroup.cc
+        VehicleHygrometerFactGroup.h
 
 	${EXTRA_SRC}
 )
 
 target_link_libraries(Vehicle
 	PRIVATE
+		Actuators
 		ui
 		compression
 		libevents_generated
 		libevents_parser
+		libevents_health_and_arming_checks
 	PUBLIC
 		qgc
 )

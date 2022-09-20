@@ -297,7 +297,7 @@ QGCCacheWorker::_saveTile(QGCMapTask *mtask)
         query.addBindValue(task->tile()->img());
         query.addBindValue(task->tile()->img().size());
         query.addBindValue(task->tile()->type());
-        query.addBindValue(QDateTime::currentDateTime().toTime_t());
+        query.addBindValue(QDateTime::currentDateTime().toSecsSinceEpoch());
         if(query.exec()) {
             quint64 tileID = query.lastInsertId().toULongLong();
             quint64 setID = task->tile()->set() == UINT64_MAX ? _getDefaultTileSet() : task->tile()->set();
@@ -370,7 +370,7 @@ QGCCacheWorker::_getTileSets(QGCMapTask* mtask)
             set->setType(getQGCMapEngine()->urlFactory()->getTypeFromId(query.value("type").toInt()));
             set->setTotalTileCount(query.value("numTiles").toUInt());
             set->setDefaultSet(query.value("defaultSet").toInt() != 0);
-            set->setCreationDate(QDateTime::fromTime_t(query.value("date").toUInt()));
+            set->setCreationDate(QDateTime::fromSecsSinceEpoch(query.value("date").toUInt()));
             _updateSetTotals(set);
             //-- Object created here must be moved to app thread to be used there
             set->moveToThread(QApplication::instance()->thread());
@@ -499,7 +499,7 @@ QGCCacheWorker::_createTileSet(QGCMapTask *mtask)
         query.addBindValue(task->tileSet()->maxZoom());
         query.addBindValue(getQGCMapEngine()->urlFactory()->getIdFromType(task->tileSet()->type()));
         query.addBindValue(task->tileSet()->totalTileCount());
-        query.addBindValue(QDateTime::currentDateTime().toTime_t());
+        query.addBindValue(QDateTime::currentDateTime().toSecsSinceEpoch());
         if(!query.exec()) {
             qWarning() << "Map Cache SQL error (add tileSet into TileSets):" << query.lastError().text();
         } else {
@@ -507,13 +507,11 @@ QGCCacheWorker::_createTileSet(QGCMapTask *mtask)
             quint64 setID = query.lastInsertId().toULongLong();
             task->tileSet()->setId(setID);
             //-- Prepare Download List
-            quint64 tileCount = 0;
             _db->transaction();
             for(int z = task->tileSet()->minZoom(); z <= task->tileSet()->maxZoom(); z++) {
                 QGCTileSet set = QGCMapEngine::getTileCount(z,
                     task->tileSet()->topleftLon(), task->tileSet()->topleftLat(),
                     task->tileSet()->bottomRightLon(), task->tileSet()->bottomRightLat(), task->tileSet()->type());
-                tileCount += set.tileCount;
                 QString type = task->tileSet()->type();
                 for(int x = set.tileX0; x <= set.tileX1; x++) {
                     for(int y = set.tileY0; y <= set.tileY1; y++) {
@@ -801,7 +799,7 @@ QGCCacheWorker::_importSets(QGCMapTask* mtask)
                             cQuery.addBindValue(type);
                             cQuery.addBindValue(numTiles);
                             cQuery.addBindValue(defaultSet);
-                            cQuery.addBindValue(QDateTime::currentDateTime().toTime_t());
+                            cQuery.addBindValue(QDateTime::currentDateTime().toSecsSinceEpoch());
                             if(!cQuery.exec()) {
                                 task->setError("Error adding imported tile set to database");
                                 break;
@@ -831,7 +829,7 @@ QGCCacheWorker::_importSets(QGCMapTask* mtask)
                                 cQuery.addBindValue(img);
                                 cQuery.addBindValue(img.size());
                                 cQuery.addBindValue(type);
-                                cQuery.addBindValue(QDateTime::currentDateTime().toTime_t());
+                                cQuery.addBindValue(QDateTime::currentDateTime().toSecsSinceEpoch());
                                 if(cQuery.exec()) {
                                     tilesSaved++;
                                     quint64 importTileID = cQuery.lastInsertId().toULongLong();
@@ -941,7 +939,7 @@ QGCCacheWorker::_exportSets(QGCMapTask* mtask)
                 exportQuery.addBindValue(getQGCMapEngine()->urlFactory()->getIdFromType(set->type()));
                 exportQuery.addBindValue(set->totalTileCount());
                 exportQuery.addBindValue(set->defaultSet());
-                exportQuery.addBindValue(QDateTime::currentDateTime().toTime_t());
+                exportQuery.addBindValue(QDateTime::currentDateTime().toSecsSinceEpoch());
                 if(!exportQuery.exec()) {
                     task->setError("Error adding tile set to exported database");
                     break;
@@ -971,7 +969,7 @@ QGCCacheWorker::_exportSets(QGCMapTask* mtask)
                                     exportQuery.addBindValue(img);
                                     exportQuery.addBindValue(img.size());
                                     exportQuery.addBindValue(type);
-                                    exportQuery.addBindValue(QDateTime::currentDateTime().toTime_t());
+                                    exportQuery.addBindValue(QDateTime::currentDateTime().toSecsSinceEpoch());
                                     if(exportQuery.exec()) {
                                         quint64 exportTileID = exportQuery.lastInsertId().toULongLong();
                                         QString s = QString("INSERT INTO SetTiles(tileID, setID) VALUES(%1, %2)").arg(exportTileID).arg(exportSetID);
@@ -1117,7 +1115,7 @@ QGCCacheWorker::_createDB(QSqlDatabase& db, bool createDefault)
                 query.prepare("INSERT INTO TileSets(name, defaultSet, date) VALUES(?, ?, ?)");
                 query.addBindValue(kDefaultSet);
                 query.addBindValue(1);
-                query.addBindValue(QDateTime::currentDateTime().toTime_t());
+                query.addBindValue(QDateTime::currentDateTime().toSecsSinceEpoch());
                 if(!query.exec()) {
                     qWarning() << "Map Cache SQL error (Creating default tile set):" << db.lastError();
                     res = false;

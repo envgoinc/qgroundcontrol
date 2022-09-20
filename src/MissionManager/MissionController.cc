@@ -1269,7 +1269,6 @@ void MissionController::_recalcFlightPathSegments(void)
     bool                signalSplitSegmentChanged = false;
 
     qCDebug(MissionControllerLog) << "_recalcFlightPathSegments homePositionValid" << homePositionValid;
-    qDebug() << "_recalcFlightPathSegments homePositionValid" << homePositionValid;
 
     FlightPathSegmentHashTable oldSegmentTable = _flightPathSegmentHashTable;
 
@@ -2465,7 +2464,6 @@ void MissionController::setCurrentPlanViewSeqNum(int sequenceNumber, bool force)
 
                 if (pVI->specifiesCoordinate()) {
                     if (!pVI->isStandaloneCoordinate()) {
-                        qDebug() << "Here3";
                         // Determine split segment used to display line split editing ui.
                         for (int j=viIndex-1; j>0; j--) {
                             VisualMissionItem* pPrev = qobject_cast<VisualMissionItem*>(_visualItems->get(j));

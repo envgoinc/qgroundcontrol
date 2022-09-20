@@ -33,7 +33,10 @@ Rectangle {
     property real _columnSpacing:       ScreenTools.defaultFontPixelHeight * 0.25
     property bool _uploadedSelected:    false
     property bool _showMavlinkLog:      QGroundControl.corePlugin.options.showMavlinkLogOptions
-    property bool _showAPMStreamRates:  QGroundControl.apmFirmwareSupported && QGroundControl.settingsManager.apmMavlinkStreamRateSettings.visible
+    property bool _showAPMStreamRates:  QGroundControl.apmFirmwareSupported && QGroundControl.settingsManager.apmMavlinkStreamRateSettings.visible && _isAPM
+    property var  _activeVehicle:       QGroundControl.multiVehicleManager.activeVehicle
+    property bool _isPX4:               _activeVehicle ? _activeVehicle.px4Firmware : false
+    property bool _isAPM:               _activeVehicle ? _activeVehicle.apmFirmware : false
     property Fact _disableDataPersistenceFact: QGroundControl.settingsManager.appSettings.disableAllPersistence
     property bool _disableDataPersistence:     _disableDataPersistenceFact ? _disableDataPersistenceFact.rawValue : false
 
@@ -369,7 +372,7 @@ Rectangle {
                 height:             mavlogLabel.height
                 anchors.margins:    ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
-                visible:            _showMavlinkLog
+                visible:            _showMavlinkLog && _isPX4
                 QGCLabel {
                     id:             mavlogLabel
                     text:           qsTr("MAVLink 2.0 Logging (PX4 Pro Only)")
@@ -382,7 +385,7 @@ Rectangle {
                 color:          qgcPal.windowShade
                 anchors.margins: ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
-                visible:        _showMavlinkLog
+                visible:        _showMavlinkLog && _isPX4
                 Column {
                     id:         mavlogColumn
                     width:      gcsColumn.width
@@ -432,7 +435,7 @@ Rectangle {
                 height:             logLabel.height
                 anchors.margins:    ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
-                visible:            _showMavlinkLog
+                visible:            _showMavlinkLog && _isPX4
                 QGCLabel {
                     id:             logLabel
                     text:           qsTr("MAVLink 2.0 Log Uploads (PX4 Pro Only)")
@@ -445,7 +448,7 @@ Rectangle {
                 color:          qgcPal.windowShade
                 anchors.margins: ScreenTools.defaultFontPixelWidth
                 anchors.horizontalCenter: parent.horizontalCenter
-                visible:        _showMavlinkLog
+                visible:        _showMavlinkLog && _isPX4
                 Column {
                     id:         logColumn
                     spacing:    _columnSpacing
@@ -546,11 +549,11 @@ Rectangle {
                             textRole:   "text"
                             model: ListModel {
                                 id: windItems
-                                ListElement { text: "Please Select"; value: -1 }
-                                ListElement { text: "Calm";     value: 0 }
-                                ListElement { text: "Breeze";   value: 5 }
-                                ListElement { text: "Gale";     value: 8 }
-                                ListElement { text: "Storm";    value: 10 }
+                                ListElement { text: qsTr("Please Select"); value: -1 }
+                                ListElement { text: qsTr("Calm");     value: 0 }
+                                ListElement { text: qsTr("Breeze");   value: 5 }
+                                ListElement { text: qsTr("Gale");     value: 8 }
+                                ListElement { text: qsTr("Storm");    value: 10 }
                             }
                             onActivated: {
                                 saveItems();
@@ -584,12 +587,12 @@ Rectangle {
                             textRole:   "text"
                             model: ListModel {
                                 id: ratingItems
-                                ListElement { text: "Please Select";            value: "notset"}
-                                ListElement { text: "Crashed (Pilot Error)";    value: "crash_pilot" }
-                                ListElement { text: "Crashed (Software or Hardware issue)";   value: "crash_sw_hw" }
-                                ListElement { text: "Unsatisfactory";           value: "unsatisfactory" }
-                                ListElement { text: "Good";                     value: "good" }
-                                ListElement { text: "Great";                    value: "great" }
+                                ListElement { text: qsTr("Please Select");            value: "notset"}
+                                ListElement { text: qsTr("Crashed (Pilot Error)");    value: "crash_pilot" }
+                                ListElement { text: qsTr("Crashed (Software or Hardware issue)");   value: "crash_sw_hw" }
+                                ListElement { text: qsTr("Unsatisfactory");           value: "unsatisfactory" }
+                                ListElement { text: qsTr("Good");                     value: "good" }
+                                ListElement { text: qsTr("Great");                    value: "great" }
                             }
                             onActivated: {
                                 saveItems();
@@ -624,8 +627,8 @@ Rectangle {
                             text:               QGroundControl.mavlinkLogManager.feedback
                             enabled:            !_disableDataPersistence
                             style: TextAreaStyle {
-                                textColor:          qgcPal.windowShade
-                                backgroundColor:    qgcPal.text
+                                textColor:          qgcPal.textFieldText
+                                backgroundColor:    qgcPal.textField
                             }
                         }
                     }
