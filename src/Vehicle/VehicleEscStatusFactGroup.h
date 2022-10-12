@@ -31,13 +31,13 @@ public:
     Q_PROPERTY(Fact* elevatorAngle      READ elevatorAngle      CONSTANT)
 
     Fact* rpm                           () { return &_rpmFact; }
-    Fact* mechPwr                       () { return &_mechPwrFact; }
-    Fact* efficiency                    () { return &_efficiencyFact; }
-    Fact* gPerW                         () { return &_gPerWFact; }
-    Fact* desiredPitch                  () { return &_desiredPitchFact; }
-    Fact* cmdHeight                     () { return &_cmdHeightFact; }
-    Fact* estHeight                     () { return &_estHeightFact; }
-    Fact* elevatorAngle                 () { return &_elevatorAngleFact; }
+    Fact* mechPwr                       () { return &_mechPwrFact; } //envgo
+    Fact* efficiency                    () { return &_efficiencyFact; } //envgo
+    Fact* gPerW                         () { return &_gPerWFact; } //envgo
+    Fact* desiredPitch                  () { return &_desiredPitchFact; } //envgo
+    Fact* cmdHeight                     () { return &_cmdHeightFact; } //envgo
+    Fact* estHeight                     () { return &_estHeightFact; } //envgo
+    Fact* elevatorAngle                 () { return &_elevatorAngleFact; } //envgo
 
     // Overrides from FactGroup
     void handleMessage(Vehicle* vehicle, mavlink_message_t& message) override;

@@ -110,6 +110,7 @@ const char* Vehicle::_escStatusFactGroupName =          "escStatus";
 const char* Vehicle::_estimatorStatusFactGroupName =    "estimatorStatus";
 const char* Vehicle::_terrainFactGroupName =            "terrain";
 const char* Vehicle::_hygrometerFactGroupName =         "hygrometer";
+const char* Vehicle::_escInfoFactGroupName =            "escInfo";
 
 // Standard connected vehicle
 Vehicle::Vehicle(LinkInterface*             link,
@@ -167,6 +168,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _localPositionFactGroup       (this)
     , _localPositionSetpointFactGroup(this)
     , _escStatusFactGroup           (this)
+    , _escInfoFactGroup             (this)
     , _estimatorStatusFactGroup     (this)
     , _hygrometerFactGroup          (this)
     , _terrainFactGroup             (this)
@@ -447,6 +449,7 @@ void Vehicle::_commonInit()
     _addFactGroup(&_localPositionFactGroup,     _localPositionFactGroupName);
     _addFactGroup(&_localPositionSetpointFactGroup,_localPositionSetpointFactGroupName);
     _addFactGroup(&_escStatusFactGroup,         _escStatusFactGroupName);
+    _addFactGroup(&_escInfoFactGroup,           _escInfoFactGroupName);
     _addFactGroup(&_estimatorStatusFactGroup,   _estimatorStatusFactGroupName);
     _addFactGroup(&_hygrometerFactGroup,        _hygrometerFactGroupName);
     _addFactGroup(&_terrainFactGroup,           _terrainFactGroupName);
