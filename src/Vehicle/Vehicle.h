@@ -39,6 +39,7 @@
 #include "VehicleVibrationFactGroup.h"
 #include "VehicleEscStatusFactGroup.h"
 #include "VehicleEscInfoFactGroup.h"
+#include "VehicleEnvgoFactGroup.h"
 #include "VehicleEstimatorStatusFactGroup.h"
 #include "VehicleHygrometerFactGroup.h"
 #include "VehicleLinkManager.h"
@@ -316,6 +317,7 @@ public:
     Q_PROPERTY(FactGroup*           setpoint        READ setpointFactGroup          CONSTANT)
     Q_PROPERTY(FactGroup*           escStatus       READ escStatusFactGroup         CONSTANT)
     Q_PROPERTY(FactGroup*           escInfo         READ escInfoFactGroup           CONSTANT)
+    Q_PROPERTY(FactGroup*           envgo           READ envgoFactGroup             CONSTANT)
     Q_PROPERTY(FactGroup*           estimatorStatus READ estimatorStatusFactGroup   CONSTANT)
     Q_PROPERTY(FactGroup*           terrain         READ terrainFactGroup           CONSTANT)
     Q_PROPERTY(FactGroup*           distanceSensors READ distanceSensorFactGroup    CONSTANT)
@@ -685,6 +687,7 @@ public:
     FactGroup* localPositionSetpointFactGroup() { return &_localPositionSetpointFactGroup; }
     FactGroup* escStatusFactGroup           () { return &_escStatusFactGroup; }
     FactGroup* escInfoFactGroup             () { return &_escInfoFactGroup; }
+    FactGroup* envgoFactGroup               () { return &_envgoFactGroup; }
     FactGroup* estimatorStatusFactGroup     () { return &_estimatorStatusFactGroup; }
     FactGroup* terrainFactGroup             () { return &_terrainFactGroup; }
     FactGroup* hygrometerFactGroup          () { return &_hygrometerFactGroup; }
@@ -1353,6 +1356,7 @@ private:
     VehicleLocalPositionSetpointFactGroup _localPositionSetpointFactGroup;
     VehicleEscStatusFactGroup       _escStatusFactGroup;
     VehicleEscInfoFactGroup         _escInfoFactGroup;
+    VehicleEnvgoFactGroup           _envgoFactGroup;
     VehicleEstimatorStatusFactGroup _estimatorStatusFactGroup;
     VehicleHygrometerFactGroup      _hygrometerFactGroup;
     TerrainFactGroup                _terrainFactGroup;
@@ -1406,6 +1410,7 @@ private:
     static const char* _localPositionSetpointFactGroupName;
     static const char* _escStatusFactGroupName;
     static const char* _escInfoFactGroupName;
+    static const char* _envgoFactGroupName;
     static const char* _estimatorStatusFactGroupName;
     static const char* _hygrometerFactGroupName;
     static const char* _terrainFactGroupName;

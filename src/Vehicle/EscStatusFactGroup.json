@@ -9,55 +9,6 @@
     "type":             "float",
     "decimalPlaces":    0,
     "default":          null
-},
-{
-    "name":             "mechPwr",
-    "shortDesc":        "Mech Power (W)",
-    "type":             "float",
-    "decimalPlaces":    0,
-    "default":          null
-},
-{
-    "name":             "efficiency",
-    "shortDesc":        "Efficiency (%)",
-    "type":             "float",
-    "decimalPlaces":    1,
-    "default":          null
-},
-{
-    "name":             "gPerW",
-    "shortDesc":        "Grams per Watt",
-    "type":             "float",
-    "decimalPlaces":    1,
-    "default":          null
-},
-{
-    "name":             "desiredPitch",
-    "shortDesc":        "Desired Pitch (deg)",
-    "type":             "float",
-    "decimalPlaces":    1,
-    "default":          null
-},
-{
-    "name":             "cmdHeight",
-    "shortDesc":        "Cmd Height (cm)",
-    "type":             "float",
-    "decimalPlaces":    1,
-    "default":          null
-},
-{
-    "name":             "estHeight",
-    "shortDesc":        "Est Height (cm)",
-    "type":             "float",
-    "decimalPlaces":    1,
-    "default":          null
-},
-{
-    "name":             "elevatorAngle",
-    "shortDesc":        "Elevator Angle (deg)",
-    "type":             "float",
-    "decimalPlaces":    1,
-    "default":          null
 }
 ]
 }

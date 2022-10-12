@@ -34,7 +34,7 @@
 #pragma once
 
 #include "FactGroup.h"
-#include "QGCMavlink.h"
+#include "QGCMAVLink.h"
 
 class Vehicle;
 
@@ -45,51 +45,42 @@ class VehicleEnvgoFactGroup : public FactGroup
     public:
         VehicleEnvgoFactGroup(QObject* parent = nullptr);
         
-        Q_PROPERTY(Fact* timestamp                READ timestamp        CONSTANT)
-        Q_PROPERTY(Fact* escErrorCount            READ escErrorCount    CONSTANT)
-        Q_PROPERTY(Fact* escRPM                   READ escRPM           CONSTANT)
-        Q_PROPERTY(Fact* escThrottle              READ escThrottle      CONSTANT)
-        Q_PROPERTY(Fact* escVoltage               READ escVoltage       CONSTANT)
-        Q_PROPERTY(Fact* escCurrent               READ escCurrent       CONSTANT)
-        Q_PROPERTY(Fact* motorPosition            READ motorPosition    CONSTANT)
-        Q_PROPERTY(Fact* escAddress               READ escAddress       CONSTANT)
-        Q_PROPERTY(Fact* escState                 READ escState         CONSTANT)
-
-        Fact* timestamp                           () { return &_timestampFact; }
-        Fact* escErrorCount                       () { return &_escErrorCountFact; }
-        Fact* escRPM                              () { return &_escRPMFact; }
-        Fact* escThrottle                         () { return &_escThrottleFact; }
-        Fact* escVoltage                          () { return &_escVoltageFact; }
-        Fact* escCurrent                          () { return &_escCurrentFact; }
-        Fact* motorPosition                       () { return &_motorPositionFact; }
-        Fact* escAddress                          () { return &_escAddressFact; }
-        Fact* escState                            () { return &_escStateFact; }
+        Q_PROPERTY(Fact* mechPwr            READ mechPwr            CONSTANT)
+        Q_PROPERTY(Fact* efficiency         READ efficiency         CONSTANT)
+        Q_PROPERTY(Fact* gPerW              READ gPerW              CONSTANT)
+        Q_PROPERTY(Fact* desiredPitch       READ desiredPitch       CONSTANT)
+        Q_PROPERTY(Fact* cmdHeight          READ cmdHeight          CONSTANT)
+        Q_PROPERTY(Fact* estHeight          READ estHeight          CONSTANT)
+        Q_PROPERTY(Fact* elevatorAngle      READ elevatorAngle      CONSTANT)
         
+        Fact* mechPwr                       () { return &_mechPwrFact; } //envgo
+        Fact* efficiency                    () { return &_efficiencyFact; } //envgo
+        Fact* gPerW                         () { return &_gPerWFact; } //envgo
+        Fact* desiredPitch                  () { return &_desiredPitchFact; } //envgo
+        Fact* cmdHeight                     () { return &_cmdHeightFact; } //envgo
+        Fact* estHeight                     () { return &_estHeightFact; } //envgo
+        Fact* elevatorAngle                 () { return &_elevatorAngleFact; } //envgo
+
 
         // Overrides from FactGroup
         void handleMessage(Vehicle* vehicle, mavlink_message_t& message) override;
 
-        static const char* _timestampFactName;
-        static const char* _escErrorCountFactName;
-        static const char* _escRPMFactName;
-        static const char* _escThrottleFactName;
-        static const char* _escVoltageFactName;
-        static const char* _escCurrentFactName;
-        static const char* _motorPositionFactName;
-        static const char* _escAddressFactName;
-        static const char* _escStateFactName;
+        static const char* _mechPwrFactName;
+        static const char* _efficiencyFactName;
+        static const char* _gPerWFactName;
+        static const char* _desiredPitchFactName;
+        static const char* _cmdHeightFactName;
+        static const char* _estHeightFactName;
+        static const char* _elevatorAngleFactName;
 
     private:
-        Fact _timestampFact;
-        Fact _escErrorCountFact;
-        Fact _escRPMFact;
-        Fact _escThrottleFact;
-        Fact _escVoltageFact;
-        Fact _escCurrentFact;
-        Fact _motorPositionFact;
-        Fact _escAddressFact;
-        Fact _escStateFact;
-
+        Fact _mechPwrFact;
+        Fact _efficiencyFact;
+        Fact _gPerWFact;
+        Fact _desiredPitchFact;
+        Fact _cmdHeightFact;
+        Fact _estHeightFact;
+        Fact _elevatorAngleFact;
 };
 
 

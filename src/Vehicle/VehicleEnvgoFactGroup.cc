@@ -35,41 +35,50 @@
 #include "Vehicle.h"
 #include "math.h"
 
-const char* VehicleEnvgoFactGroup::_timestampFactName =                   "timestamp";
-const char* VehicleEnvgoFactGroup::_escErrorCountFactName =               "escErrorCount";
-const char* VehicleEnvgoFactGroup::_escRPMFactName =                      "escRPM";
-const char* VehicleEnvgoFactGroup::_escThrottleFactName =                 "escThrottle";
-const char* VehicleEnvgoFactGroup::_escVoltageFactName =                  "escVoltage";
-const char* VehicleEnvgoFactGroup::_escCurrentFactName =                  "escCurrent";
-const char* VehicleEnvgoFactGroup::_motorPositionFactName =               "motorPosition";
-const char* VehicleEnvgoFactGroup::_escAddressFactName =                  "escAddress";
-const char* VehicleEnvgoFactGroup::_escStateFactName =                    "escState";
+const char* VehicleEnvgoFactGroup::_mechPwrFactName =                           "mechPwr";
+const char* VehicleEnvgoFactGroup::_efficiencyFactName =                        "efficiency";
+const char* VehicleEnvgoFactGroup::_gPerWFactName =                             "gPerW";
+const char* VehicleEnvgoFactGroup::_desiredPitchFactName =                      "desiredPitch";
+const char* VehicleEnvgoFactGroup::_cmdHeightFactName =                         "cmdHeight";
+const char* VehicleEnvgoFactGroup::_estHeightFactName =                         "estHeight";
+const char* VehicleEnvgoFactGroup::_elevatorAngleFactName =                     "elevatorAngle";
+
 
 VehicleEnvgoFactGroup::VehicleEnvgoFactGroup(QObject* parent)
     : FactGroup                         (1000, ":/json/Vehicle/EnvgoFactGroup.json", parent)
-    , _timestampFact                    (0, _timestampFactName,                 FactMetaData::valueTypeFloat)
-    , _escErrorCountFact                (0, _escErrorCountFactName,             FactMetaData::valueTypeFloat)
-    , _escRPMFact                       (0, _escRPMFactName,                    FactMetaData::valueTypeFloat)
-    , _escThrottleFact                  (0, _escThrottleFactName,               FactMetaData::valueTypeFloat)
-    , _escVoltageFact                   (0, _escVoltageFactName,                FactMetaData::valueTypeFloat)
-    , _escCurrentFact                   (0, _escCurrentFactName,                FactMetaData::valueTypeFloat)
-    , _motorPositionFact                (0, _motorPositionFactName,             FactMetaData::valueTypeFloat)
-    , _escAddressFact                   (0, _escAddressFactName,                FactMetaData::valueTypeFloat)
-    , _escStateFact                     (0, _escStateFactName,                  FactMetaData::valueTypeFloat)
+    , _mechPwrFact                      (0, _mechPwrFactName,                       FactMetaData::valueTypeFloat)
+    , _efficiencyFact                   (0, _efficiencyFactName,                    FactMetaData::valueTypeFloat)
+    , _gPerWFact                        (0, _gPerWFactName,                         FactMetaData::valueTypeFloat)
+    , _desiredPitchFact                 (0, _desiredPitchFactName,                  FactMetaData::valueTypeFloat)
+    , _cmdHeightFact                    (0, _cmdHeightFactName,                     FactMetaData::valueTypeFloat)
+    , _estHeightFact                    (0, _estHeightFactName,                     FactMetaData::valueTypeFloat)
+    , _elevatorAngleFact                (0, _elevatorAngleFactName,                 FactMetaData::valueTypeFloat)
 
 {
-    _addFact(&_timestampFact,               _timestampFactName);
-    _addFact(&_escErrorCountFact,           _escErrorCountFactName);
-    _addFact(&_escRPMFact,                  _escRPMFactName);
-    _addFact(&_escThrottleFact,             _escThrottleFactName);
-    _addFact(&_escVoltageFact,              _escVoltageFactName);
-    _addFact(&_escCurrentFact,              _escCurrentFactName);
-    _addFact(&_motorPositionFact,           _motorPositionFactName);
-    _addFact(&_escAddressFact,              _escAddressFactName);
-    _addFact(&_escStateFact,                _escStateFactName);
+    _addFact(&_mechPwrFact,                     _mechPwrFactName);
+    _addFact(&_efficiencyFact,                  _efficiencyFactName);
+    _addFact(&_gPerWFact,                       _gPerWFactName);
+    _addFact(&_desiredPitchFact,                    _desiredPitchFactName);
+    _addFact(&_cmdHeightFact,                   _cmdHeightFactName);
+    _addFact(&_estHeightFact,                   _estHeightFactName);
+    _addFact(&_elevatorAngleFact,               _elevatorAngleFactName);
 }
 
 void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_message_t& message)
 {
-    
+    if (message.msgid == MAVLINK_MSG_ID_DEBUG_VECT) {
+        mavlink_debug_vect_t content;
+        mavlink_msg_debug_vect_decode(&message, &content);
+
+        mechPwr()->setRawValue                      (content.x);
+        efficiency()->setRawValue                   (content.y);
+        gPerW()->setRawValue                        (content.z);
+    }  else if (message.msgid == MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY) {
+        mavlink_debug_float_array_t content;
+        mavlink_msg_debug_float_array_decode(&message, &content);
+        desiredPitch()->setRawValue                 (content.data[10] * 180 / M_PI);
+        cmdHeight()->setRawValue                    (content.data[50] * 100);
+        estHeight()->setRawValue                    (content.data[51] * 100);
+        elevatorAngle()->setRawValue                (content.data[36] * 180 / M_PI);
+    }
 }
