@@ -11,7 +11,6 @@
 #include "Vehicle.h"
 #include "math.h"
 
-const char* VehicleEscStatusFactGroup::_rpmFactName =                               "rpm";
 const char* VehicleEscStatusFactGroup::_indexFactName =                             "index";
 
 const char* VehicleEscStatusFactGroup::_rpmFirstFactName =                          "rpm1";
@@ -31,7 +30,6 @@ const char* VehicleEscStatusFactGroup::_voltageFourthFactName =                 
 
 VehicleEscStatusFactGroup::VehicleEscStatusFactGroup(QObject* parent)
     : FactGroup                         (1000, ":/json/Vehicle/EscStatusFactGroup.json", parent)
-    , _rpmFact                          (0, _rpmFactName,                           FactMetaData::valueTypeFloat)
     , _indexFact                        (0, _indexFactName,                         FactMetaData::valueTypeUint8)
 
     , _rpmFirstFact                     (0, _rpmFirstFactName,                      FactMetaData::valueTypeFloat)
@@ -50,7 +48,6 @@ VehicleEscStatusFactGroup::VehicleEscStatusFactGroup(QObject* parent)
     , _voltageFourthFact                (0, _voltageFourthFactName,                 FactMetaData::valueTypeFloat)
 
 {
-    _addFact(&_rpmFact,                         _rpmFactName);
     _addFact(&_indexFact,                       _indexFactName);
 
     _addFact(&_rpmFirstFact,                    _rpmFirstFactName);
@@ -72,14 +69,9 @@ VehicleEscStatusFactGroup::VehicleEscStatusFactGroup(QObject* parent)
 
 void VehicleEscStatusFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_message_t& message)
 {
-    
-    if (message.msgid == MAVLINK_MSG_ID_RAW_RPM) {
-        mavlink_raw_rpm_t content;
-        mavlink_msg_raw_rpm_decode(&message, &content);
-
-        rpm()->setRawValue                          (content.frequency);
-    }
-    if (message.msgid == MAVLINK_MSG_ID_ESC_STATUS){
+    if (message.msgid != MAVLINK_MSG_ID_ESC_STATUS){
+        return;
+    } else{
         mavlink_esc_status_t content;
         mavlink_msg_esc_status_decode(&message, &content);
 

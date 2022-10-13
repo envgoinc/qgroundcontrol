@@ -4,13 +4,6 @@
     "QGC.MetaData.Facts":
 [
 {
-    "name":             "rpm",
-    "shortDesc":        "RPM",
-    "type":             "float",
-    "decimalPlaces":    0,
-    "default":          null
-},
-{
     "name":             "index",
     "shortDesc":        "Index Of The First ESC In This Message",
     "type":             "uint8",
