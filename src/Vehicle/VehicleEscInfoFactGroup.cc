@@ -129,8 +129,8 @@ void VehicleEscInfoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_mess
     errorCountThird()->setRawValue      (content.error_count[2]);
     errorCountFourth()->setRawValue     (content.error_count[3]);
 
-    temperatureFirst()->setRawValue     (content.temperature[0]);
-    temperatureSecond()->setRawValue    (content.temperature[1]);
-    temperatureThird()->setRawValue     (content.temperature[2]);
-    temperatureFourth()->setRawValue    (content.temperature[3]);
+    temperatureFirst()->setRawValue     (content.temperature[0]/100);
+    temperatureSecond()->setRawValue    (content.temperature[1]/100);
+    temperatureThird()->setRawValue     (content.temperature[2]/100);
+    temperatureFourth()->setRawValue    (content.temperature[3]/100);
 }
