@@ -110,6 +110,8 @@ const char* Vehicle::_escStatusFactGroupName =          "escStatus";
 const char* Vehicle::_estimatorStatusFactGroupName =    "estimatorStatus";
 const char* Vehicle::_terrainFactGroupName =            "terrain";
 const char* Vehicle::_hygrometerFactGroupName =         "hygrometer";
+const char* Vehicle::_escInfoFactGroupName =            "escInfo";
+const char* Vehicle::_envgoFactGroupName =            "envgo";
 
 // Standard connected vehicle
 Vehicle::Vehicle(LinkInterface*             link,
@@ -167,6 +169,8 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _localPositionFactGroup       (this)
     , _localPositionSetpointFactGroup(this)
     , _escStatusFactGroup           (this)
+    , _escInfoFactGroup             (this)
+    , _envgoFactGroup               (this)
     , _estimatorStatusFactGroup     (this)
     , _hygrometerFactGroup          (this)
     , _terrainFactGroup             (this)
@@ -436,20 +440,22 @@ void Vehicle::_commonInit()
     _hobbsFact.setRawValue(QVariant(QString("0000:00:00")));
     _addFact(&_hobbsFact,               _hobbsFactName);
 
-    _addFactGroup(&_gpsFactGroup,               _gpsFactGroupName);
-    _addFactGroup(&_gps2FactGroup,              _gps2FactGroupName);
-    _addFactGroup(&_windFactGroup,              _windFactGroupName);
-    _addFactGroup(&_vibrationFactGroup,         _vibrationFactGroupName);
-    _addFactGroup(&_temperatureFactGroup,       _temperatureFactGroupName);
-    _addFactGroup(&_clockFactGroup,             _clockFactGroupName);
-    _addFactGroup(&_setpointFactGroup,          _setpointFactGroupName);
-    _addFactGroup(&_distanceSensorFactGroup,    _distanceSensorFactGroupName);
-    _addFactGroup(&_localPositionFactGroup,     _localPositionFactGroupName);
-    _addFactGroup(&_localPositionSetpointFactGroup,_localPositionSetpointFactGroupName);
-    _addFactGroup(&_escStatusFactGroup,         _escStatusFactGroupName);
-    _addFactGroup(&_estimatorStatusFactGroup,   _estimatorStatusFactGroupName);
-    _addFactGroup(&_hygrometerFactGroup,        _hygrometerFactGroupName);
-    _addFactGroup(&_terrainFactGroup,           _terrainFactGroupName);
+    _addFactGroup(&_gpsFactGroup,                   _gpsFactGroupName);
+    _addFactGroup(&_gps2FactGroup,                  _gps2FactGroupName);
+    _addFactGroup(&_windFactGroup,                  _windFactGroupName);
+    _addFactGroup(&_vibrationFactGroup,             _vibrationFactGroupName);
+    _addFactGroup(&_temperatureFactGroup,           _temperatureFactGroupName);
+    _addFactGroup(&_clockFactGroup,                 _clockFactGroupName);
+    _addFactGroup(&_setpointFactGroup,              _setpointFactGroupName);
+    _addFactGroup(&_distanceSensorFactGroup,        _distanceSensorFactGroupName);
+    _addFactGroup(&_localPositionFactGroup,         _localPositionFactGroupName);
+    _addFactGroup(&_localPositionSetpointFactGroup, _localPositionSetpointFactGroupName);
+    _addFactGroup(&_escStatusFactGroup,             _escStatusFactGroupName);
+    _addFactGroup(&_escInfoFactGroup,               _escInfoFactGroupName);
+    _addFactGroup(&_envgoFactGroup,                 _envgoFactGroupName);
+    _addFactGroup(&_estimatorStatusFactGroup,       _estimatorStatusFactGroupName);
+    _addFactGroup(&_hygrometerFactGroup,            _hygrometerFactGroupName);
+    _addFactGroup(&_terrainFactGroup,               _terrainFactGroupName);
 
     // Add firmware-specific fact groups, if provided
     QMap<QString, FactGroup*>* fwFactGroups = _firmwarePlugin->factGroups();

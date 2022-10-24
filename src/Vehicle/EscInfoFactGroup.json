@@ -1,0 +1,126 @@
+{
+    "version":  1,
+    "fileType": "FactMetaData",
+    "QGC.MetaData.Facts":
+[
+    {
+        "name":             "index",
+        "shortDesc":        "Index of the first ESC in this message.",
+        "type":             "uint8",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "counter",
+        "shortDesc":        "Counter of data packets received",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "count",
+        "shortDesc":        "Total number of ESCs in all messages of this type",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "connectionType",
+        "shortDesc":        "Connection type protocol for all ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "info",
+        "shortDesc":        "Information regarding online/offline status of each ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "failureFlagFirst",
+        "shortDesc":        "Bitmap of ESC failure flags",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "failureFlagSecond",
+        "shortDesc":        "Bitmap of ESC failure flags",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "failureFlagThird",
+        "shortDesc":        "Bitmap of ESC failure flags",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "failureFlagFourth",
+        "shortDesc":        "Bitmap of ESC failure flags",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "errorCountFirst",
+        "shortDesc":        "Number of reported errors by ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "errorCountSecond",
+        "shortDesc":        "Number of reported errors by ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "errorCountThird",
+        "shortDesc":        "Number of reported errors by ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "errorCountFourth",
+        "shortDesc":        "Number of reported errors by ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "temperatureFirst",
+        "shortDesc":        "Temperature",
+        "type":             "float",
+        "decimalPlaces":    2,
+        "default":          null
+    },
+    {
+        "name":             "temperatureSecond",
+        "shortDesc":        "Temperature",
+        "type":             "float",
+        "decimalPlaces":    2,
+        "default":          null
+    },
+    {
+        "name":             "temperatureThird",
+        "shortDesc":        "Temperature",
+        "type":             "float",
+        "decimalPlaces":    2,
+        "default":          null
+    },
+    {
+        "name":             "temperatureFourth",
+        "shortDesc":        "Temperature",
+        "type":             "float",
+        "decimalPlaces":    2,
+        "default":          null
+    }
+]
+}
