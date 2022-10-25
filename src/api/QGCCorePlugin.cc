@@ -300,9 +300,7 @@ void QGCCorePlugin::factValueGridCreateDefaultSettings(const QString& defaultSet
     factValueGrid.appendColumn();
     factValueGrid.appendColumn();
     factValueGrid.appendColumn();
-    if (includeFWValues) {
-        factValueGrid.appendColumn();
-    }
+    factValueGrid.appendColumn();
     factValueGrid.appendRow();
 
     int                 rowIndex    = 0;
