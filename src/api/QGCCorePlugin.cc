@@ -293,8 +293,6 @@ void QGCCorePlugin::factValueGridCreateDefaultSettings(const QString& defaultSet
 {
     HorizontalFactValueGrid factValueGrid(defaultSettingsGroup);
 
-    bool        includeFWValues = factValueGrid.vehicleClass() == QGCMAVLink::VehicleClassFixedWing || factValueGrid.vehicleClass() == QGCMAVLink::VehicleClassVTOL || factValueGrid.vehicleClass() == QGCMAVLink::VehicleClassAirship;
-
     factValueGrid.setFontSize(FactValueGrid::LargeFontSize);
 
     factValueGrid.appendColumn();
@@ -308,53 +306,51 @@ void QGCCorePlugin::factValueGridCreateDefaultSettings(const QString& defaultSet
 
     InstrumentValueData* value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("Vehicle", "GroundSpeed");
-    value->setText(value->fact()->shortDescription());
+    value->setText(value->fact()->name());
     value->setShowUnits(true);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("EscInfo", "Temperature1");
-    value->setText(value->fact()->shortDescription());
+    value->setText(value->fact()->name());
     value->setShowUnits(true);
 
     rowIndex    = 0;
     column      = factValueGrid.columns()->value<QmlObjectListModel*>(1);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("Battery", "Current");
-    value->setText(value->fact()->shortDescription());
+    value->setFact("Vehicle", "GroundSpeed");
+    value->setText("Bat Curr");
     value->setShowUnits(true);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("EscInfo", "Temperature1");
-    value->setText(value->fact()->shortDescription());
+    value->setText("Bat Temp");
     value->setShowUnits(true);
-
-
     
     rowIndex    = 0;
     column      = factValueGrid.columns()->value<QmlObjectListModel*>(2);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("EscStatus", "Current1");
-    value->setText(value->fact()->shortDescription());
+    value->setText(value->fact()->name());
     value->setShowUnits(true);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("Envgo", "MechPwr");
-    value->setText(value->fact()->shortDescription());
+    value->setText(value->fact()->name());
     value->setShowUnits(true);
 
     rowIndex    = 0;
-    column      = factValueGrid.columns()->value<QmlObjectListModel*>(includeFWValues ? 3 : 2);
+    column      = factValueGrid.columns()->value<QmlObjectListModel*>(3);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("EscStatus", "Rpm1");
-    value->setText(value->fact()->shortDescription());
+    value->setText(value->fact()->name());
     value->setShowUnits(false);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("Envgo", "Efficiency");
-    value->setText(value->fact()->shortDescription());
+    value->setText(value->fact()->name());
     value->setShowUnits(true);
 }
 
