@@ -52,5 +52,12 @@
     "decimalPlaces":    1,
     "default":          null
 }
+{
+    "name":             "heightAboveWater",
+    "shortDesc":        "Height Above Water (cm)",
+    "type":             "float",
+    "decimalPlaces":    1,
+    "default":          null
+}
 ]
 }
