@@ -33,7 +33,6 @@
 
 #include "VehicleEnvgoFactGroup.h"
 #include "Vehicle.h"
-#include "math.h"
 
 const char* VehicleEnvgoFactGroup::_mechPwrFactName =                           "mechPwr";
 const char* VehicleEnvgoFactGroup::_efficiencyFactName =                        "efficiency";
@@ -42,7 +41,8 @@ const char* VehicleEnvgoFactGroup::_desiredPitchFactName =                      
 const char* VehicleEnvgoFactGroup::_cmdHeightFactName =                         "cmdHeight";
 const char* VehicleEnvgoFactGroup::_estHeightFactName =                         "estHeight";
 const char* VehicleEnvgoFactGroup::_elevatorAngleFactName =                     "elevatorAngle";
-const char* VehicleEnvgoFactGroup::_heightAboveWaterFactName =                  "HeightAboveWater";
+const char* VehicleEnvgoFactGroup::_desiredHeightFactName =                     "desiredHeight";
+const char* VehicleEnvgoFactGroup::_gearFactName =                              "gear";
 
 
 VehicleEnvgoFactGroup::VehicleEnvgoFactGroup(QObject* parent)
@@ -54,17 +54,19 @@ VehicleEnvgoFactGroup::VehicleEnvgoFactGroup(QObject* parent)
     , _cmdHeightFact                    (0, _cmdHeightFactName,                     FactMetaData::valueTypeFloat)
     , _estHeightFact                    (0, _estHeightFactName,                     FactMetaData::valueTypeFloat)
     , _elevatorAngleFact                (0, _elevatorAngleFactName,                 FactMetaData::valueTypeFloat)
-    , _heightAboveWaterFact             (0, _heightAboveWaterFactName,              FactMetaData::valueTypeFloat)
+    , _desiredHeightFact                (0, _desiredHeightFactName,                 FactMetaData::valueTypeFloat)
+    , _gearFact                         (0, _gearFactName,                          FactMetaData::valueTypeFloat)
 
 {
     _addFact(&_mechPwrFact,                     _mechPwrFactName);
     _addFact(&_efficiencyFact,                  _efficiencyFactName);
     _addFact(&_gPerWFact,                       _gPerWFactName);
-    _addFact(&_desiredPitchFact,                    _desiredPitchFactName);
+    _addFact(&_desiredPitchFact,                _desiredPitchFactName);
     _addFact(&_cmdHeightFact,                   _cmdHeightFactName);
     _addFact(&_estHeightFact,                   _estHeightFactName);
     _addFact(&_elevatorAngleFact,               _elevatorAngleFactName);
-    _addFact(&_heightAboveWaterFact,            _heightAboveWaterFactName);
+    _addFact(&_desiredHeightFact,               _desiredHeightFactName);
+    _addFact(&_gearFact,                        _gearFactName);
 }
 
 void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_message_t& message)
@@ -81,7 +83,9 @@ void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_messag
         mavlink_msg_debug_float_array_decode(&message, &content);
         desiredPitch()->setRawValue                 (content.data[10] * 180 / M_PI);
         cmdHeight()->setRawValue                    (content.data[50] * 100);
-        estHeight()->setRawValue                    (content.data[51] * 100);
+        estHeight()->setRawValue                    (round(content.data[51] * 100));
         elevatorAngle()->setRawValue                (content.data[36] * 180 / M_PI);
+        desiredHeight()->setRawValue                (round(content.data[25])) ;
+        gear()->setRawValue                         ((int)content.data[48]);
     }
 }

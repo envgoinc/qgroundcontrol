@@ -159,7 +159,7 @@ void VehicleBatteryFactGroup::_handleBatteryStatus(Vehicle* vehicle, mavlink_mes
     group->percentRemaining()->setRawValue  (batteryStatus.battery_remaining == -1 ?    qQNaN() : batteryStatus.battery_remaining);
     group->timeRemaining()->setRawValue     (batteryStatus.time_remaining == 0 ?        qQNaN() : batteryStatus.time_remaining);
     group->chargeState()->setRawValue       (batteryStatus.charge_state);
-    group->instantPower()->setRawValue      (totalVoltage * group->current()->rawValue().toDouble());
+    group->instantPower()->setRawValue      ((ceil((totalVoltage * group->current()->rawValue().toDouble()) * 100)) / 100);
     group->_setTelemetryAvailable(true);
 }
 

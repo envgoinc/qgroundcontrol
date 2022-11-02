@@ -31,9 +31,6 @@ import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
 import QGroundControl.FactControls  1.0
 
-//import "androidwidgets.h"
-
-//import <EnvgoFactGroup.h>
 
 // This is the ui overlay layer for the widgets/tools for Fly View
 Item {
@@ -54,31 +51,19 @@ Item {
     property rect   _centerViewport:        Qt.rect(0, 0, width, height)
     property real   _rightPanelWidth:       ScreenTools.defaultFontPixelWidth * 30
 
-    property string _batteryPercentage0:   _activeVehicle ? (globals.activeVehicle.batteries.get(0).percentRemaining.valueString + ' ' +  globals.activeVehicle.batteries.get(0).percentRemaining.units) : "Battery 0 Unavailable"
-    property string _batteryPercentage1:   _activeVehicle ? (globals.activeVehicle.batteries.get(1).percentRemaining.valueString + ' ' +  globals.activeVehicle.batteries.get(1).percentRemaining.units) : "Battery 1 Unavailable"
-    property string _heightAboveWater:      _activeVehicle ? _activeVehicle.flightMode : "flightMode Not Detected"
-    property string _distanceTravelled:     _activeVehicle ? (isNaN(_activeVehicle.flightDistance.value) ? "FlightDistance Error" : _activeVehicle.flightDistance.value.toFixed(1)) + ' ' + _activeVehicle.flightDistance.units : "Connect Vehicle"
-    property string _flightMode:           _activeVehicle ? _activeVehicle.flightMode : "Error"
-    property string _escTemperature:        _activeVehicle ? (isNaN(_activeVehicle.escInfo.temperatureFirst.rawValue) ? "Esc Temp: 0.0" :"Esc Temp: " + _activeVehicle.escInfo.temperatureFirst.rawValue) + ' ' + _activeVehicle.escInfo.temperatureFirst.units : "Esc Temp: 0.0"
-    property string _batteryTemperature:    _activeVehicle ? (isNaN(globals.activeVehicle.batteries.get(1).temperature.rawValue) ? "0.0" : globals.activeVehicle.batteries.get(1).temperature.rawValue) + ' ' + globals.activeVehicle.batteries.get(1).temperature.units : "0.0"
-    property string _groundSpeed:          _activeVehicle ? (isNaN(_activeVehicle.groundSpeed.value) ? "0.0 m/s" : _activeVehicle.groundSpeed.value.toFixed(1)) + ' ' + _activeVehicle.groundSpeed.units : "0.0 m/s"
-    property string _stats:                 _activeVehicle ? _activeVehicle.flightMode : "Error"
-    property string _gear:                  _activeVehicle ? (isNaN(_activeVehicle.throttlePct.value) ? "Throttle Error" : _activeVehicle.throttlePct.value.toFixed(1)) + ' ' + _activeVehicle.throttlePct.units : "Connect Vehicle"
-    property string _electricalPower:       _activeVehicle ? _activeVehicle.flightMode : "Error"
-    property string _efficiency:           _activeVehicle ? (isNaN(_activeVehicle.envgo.efficiency.rawValue) ? "0.0" : _activeVehicle.envgo.efficiency.rawValue) + ' ' + _activeVehicle.envgo.efficiency.units : "0.0"
-    property string _heading:              _activeVehicle   ? _activeVehicle.heading.rawValue : 0
+    property string _estHeight:             _activeVehicle ? (isNaN(_activeVehicle.envgo.estHeight.rawValue) ? "0.0" :"Est: " +  _activeVehicle.envgo.estHeight.rawValue + ' ' + _activeVehicle.envgo.estHeight.units) : ' '
+    property string _desiredHeight:         _activeVehicle ? (isNaN(_activeVehicle.envgo.desiredHeight.rawValue) ? "0.0" : "Des: " + _activeVehicle.envgo.desiredHeight.rawValue + ' ' + _activeVehicle.envgo.desiredHeight.units) : ' '
+    property string _distanceTravelled:     _activeVehicle ? (isNaN(_activeVehicle.flightDistance.value) ? "FlightDistance Error" : _activeVehicle.flightDistance.value.toFixed(1)) + ' ' + _activeVehicle.flightDistance.units : ' '
+    property string _flightMode:            _activeVehicle ? _activeVehicle.flightMode : ' '
+    property string _escTemperature:        _activeVehicle ? (isNaN(_activeVehicle.escInfo.temperatureFirst.rawValue) ? "Esc Temp: 0.0" :"Esc Temp: " + _activeVehicle.escInfo.temperatureFirst.rawValue) + ' ' + _activeVehicle.escInfo.temperatureFirst.units : ' '
+    property string _batteryTemperature:    _activeVehicle ? (isNaN(globals.activeVehicle.batteries.get(1).temperature.rawValue) ? "0.0" : globals.activeVehicle.batteries.get(1).temperature.rawValue) + ' ' + globals.activeVehicle.batteries.get(1).temperature.units : ' '
+    property string _groundSpeed:           _activeVehicle ? (isNaN(_activeVehicle.groundSpeed.value) ? "0.0 m/s" : _activeVehicle.groundSpeed.value.toFixed(1)) + ' ' + _activeVehicle.groundSpeed.units : "Connect To Vehicle"
+    property string _gear:                  _activeVehicle ? (isNaN(_activeVehicle.envgo.gear.rawValue) ? "N/A" :  _activeVehicle.envgo.gear.rawValue) : ' '
+    property string _efficiency:            _activeVehicle ? (isNaN(_activeVehicle.envgo.efficiency.rawValue) ? "0.0" : _activeVehicle.envgo.efficiency.rawValue) + ' ' + _activeVehicle.envgo.efficiency.units : ' '
+    property string _heading:               _activeVehicle   ? _activeVehicle.heading.rawValue : ' '
     
 
-    function gear(n) {
-        if (n > 0) {
-            return "FWD";
-
-        }
-        else{
-            return "RVR";
-        }
-    }
-
+    
 
     // 1st Row
     // Battery Percentage
@@ -153,20 +138,6 @@ Item {
         
         height: parent.height / 3
         width: parent.width / 4
-        color: {
-            var x = 100
-            var y = 100
-            if (x < 20 || y < 20) {
-                return "red"
-            }
-            else if (x < 50 || y < 50) {
-                return "yellow"
-            }
-            else {
-                return "transparent"
-
-            }
-        }
         border.color: "black"
     }
 
@@ -179,7 +150,7 @@ Item {
         }
         Text {
             id: heightAboveTheWaterTitle
-            text: qsTr("Height Above The Water")
+            text: qsTr("Height Above Water")
             anchors{
                 top: parent.top
                 left: parent.left
@@ -189,18 +160,41 @@ Item {
             font.pointSize: 20
             font.underline: true
         }
-        Text {
+        ColumnLayout{
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             anchors{
-                top: heightAboveTheWaterTitle.bottom
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
+                        top: batteryPercentageTitle.bottom
+                        left: parent.left
+                        right: parent.right
+                    }
+            Text {
+                id: desHeight
+                anchors{
+                    top: heightAboveTheWaterTitle.bottom
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+                horizontalAlignment: Text.AlignHCenter
+                //verticalAlignment: Text.AlignVCenter
+                font.bold: true
+                font.pointSize: 30
+                text:_desiredHeight
             }
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.bold: true
-            font.pointSize: 30
-            text: qsTr("2 cm")
+            
+            Text {
+                anchors{
+                    top: desHeight.bottom
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+                horizontalAlignment: Text.AlignHCenter
+                //verticalAlignment: Text.AlignVCenter
+                font.bold: true
+                font.pointSize: 30
+                text: _estHeight
+            }
         }
         height: parent.height / 3
         width: parent.width / 4
@@ -314,22 +308,9 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.bold: true
-            font.pointSize: 30
+            font.pointSize: 24
             text: _escTemperature
         }
-        // Text {
-        //     anchors{
-        //         top: escTempinfo.bottom
-        //         bottom: parent.bottom
-        //         left: parent.left
-        //         right: parent.right
-        //     }
-        //     horizontalAlignment: Text.AlignHCenter
-        //     verticalAlignment: Text.AlignVCenter
-        //     font.bold: true
-        //     font.pointSize: 30
-        //     text: _batteryTemperature
-        // }
         ColumnLayout{
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             anchors{
@@ -344,7 +325,7 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     font.bold: true
-                    font.pointSize: 24
+                    font.pointSize: 20
                     text: object.function.enumStringValue + ": " + object.temperature.rawValue + ' ' + object.temperature.units
                 }           
 
@@ -377,6 +358,7 @@ Item {
         }
        
         Text {
+            id: groundSpeed
             anchors{
                 top: speedTitle.bottom
                 bottom: parent.bottom
@@ -386,8 +368,19 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.bold: true
-            font.pointSize: 40
+            font.pointSize: 44
             text: _groundSpeed
+        }
+        GuidedActionConfirm {
+            anchors{
+                top: speedTitle.bottom
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            Layout.fillWidth:   true
+            guidedController:   _guidedController
+            guidedValueSlider:     _guidedValueSlider
         }
         height: parent.height / 3
         width: parent.width / 2
@@ -414,19 +407,70 @@ Item {
             font.pointSize: 20
             font.underline: true
         }
-        Text {
-            anchors{
-                top: statsTitle.bottom
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
+        TelemetryValuesBar {
+            id:                 telemetryPanel
+            x:                  recalcXPosition()
+            anchors.top:        statsTitle
+            anchors.bottom:     parent.bottom
+            anchors.left:       parent.left
+            anchors.right:      parent.right
+            // States for custom layout support
+            states: [
+                State {
+                    name: "bottom"
+                    when: telemetryPanel.bottomMode
+                    AnchorChanges {
+                        target:                 telemetryPanel
+                        anchors.top:            undefined
+                        anchors.bottom:         parent.bottom
+                        anchors.left:           parent.left
+                        anchors.right:          parent.right
+                        anchors.verticalCenter: undefined
+                    }
+                    PropertyChanges {
+                        target: telemetryPanel
+                        x: recalcXPosition()
+                    }
+                },
+                State {
+                    name: "right-video"
+                    when: !telemetryPanel.bottomMode && photoVideoControl.visible
+                    AnchorChanges {
+                        target: telemetryPanel
+                        anchors.top: photoVideoControl.bottom
+                        anchors.bottom: undefined
+                        anchors.right: parent.right
+                        anchors.verticalCenter: undefined
+                    }
+                },
+                State {
+                    name: "right-novideo"
+                    when: !telemetryPanel.bottomMode && !photoVideoControl.visible
+                    AnchorChanges {
+                        target:                 telemetryPanel
+                        anchors.top:            undefined
+                        anchors.bottom:         undefined
+                        anchors.left:           parent.left
+                        anchors.right:          parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+            ]
+            function recalcXPosition() {
+                // First try centered
+                var halfRootWidth   = _root.width / 2
+                var halfPanelWidth  = telemetryPanel.width / 2
+                var leftX           = (halfRootWidth - halfPanelWidth) - _toolsMargin
+                var rightX          = (halfRootWidth + halfPanelWidth) + _toolsMargin
+                if (leftX >= parentToolInsets.leftEdgeBottomInset || rightX <= parentToolInsets.rightEdgeBottomInset ) {
+                    // It will fit in the horizontalCenter
+                    return halfRootWidth - halfPanelWidth
+                } else {
+                    // Anchor to left edge
+                    return parentToolInsets.leftEdgeBottomInset + _toolsMargin
+                }
             }
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.bold: true
-            font.pointSize: 30
-            text: qsTr("fake stat 1")
-        }
+        } 
         height: parent.height / 3
         width: parent.width / 4
         color: "transparent"
@@ -464,7 +508,16 @@ Item {
             verticalAlignment: Text.AlignVCenter
             font.bold: true
             font.pointSize: 30
-            text: _gear
+            text: {
+                if (_gear != ' '){
+                    switch (_gear - 0) {
+                        case 0: return "N"
+                        case 1: return "F"
+                        case -1: return "R"
+                    }
+                }
+                
+            }
         }
         height: parent.height / 3
         width: parent.width / 4
@@ -507,8 +560,8 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     font.bold: true
-                    font.pointSize: 24
-                    text: object.function.enumStringValue + ": " + object.voltage.rawValue * object.current.rawValue + "W"
+                    font.pointSize: 20
+                    text: object.function.enumStringValue + ": " + object.instantPower.rawValue  + " W"
                 }           
 
             }
@@ -601,18 +654,24 @@ Item {
             font.bold: true
             font.pointSize: 30
             text: {
-                var a = _heading % 45
-                switch(_heading - a) {
-                    case 0:     return "N"
-                    case 45:    return "NE"
-                    case 90:    return "E"
-                    case 135:   return "SE"
-                    case 180:   return "S"
-                    case 225:   return "SW"
-                    case 270:   return "W"
-                    case 315:   return "NW"
+                if (_heading != ' ') {
+                    var a = _heading % 45
+                    switch(_heading - a) {
+                        case 0:     return "N"
+                        case 45:    return "NE"
+                        case 90:    return "E"
+                        case 135:   return "SE"
+                        case 180:   return "S"
+                        case 225:   return "SW"
+                        case 270:   return "W"
+                        case 315:   return "NW"
+                    }
+                    return "ERROR"
                 }
-                return "ERROR" 
+                else {
+                    return ' '
+                }
+                 
             }
         }
         height: parent.height / 3
@@ -628,69 +687,7 @@ Item {
         }
     }
 
-    TelemetryValuesBar {
-        id:                 telemetryPanel
-        x:                  recalcXPosition()
-        anchors.bottom:     parent.bottom
-        anchors.left:       parent.left
-        anchors.right:      parent.right
-        // States for custom layout support
-        states: [
-            State {
-                name: "bottom"
-                when: telemetryPanel.bottomMode
-                AnchorChanges {
-                    target:                 telemetryPanel
-                    anchors.top:            undefined
-                    anchors.bottom:         parent.bottom
-                    anchors.left:           parent.left
-                    anchors.right:          parent.right
-                    anchors.verticalCenter: undefined
-                }
-                PropertyChanges {
-                    target: telemetryPanel
-                    x: recalcXPosition()
-                }
-            },
-            State {
-                name: "right-video"
-                when: !telemetryPanel.bottomMode && photoVideoControl.visible
-                AnchorChanges {
-                    target: telemetryPanel
-                    anchors.top: photoVideoControl.bottom
-                    anchors.bottom: undefined
-                    anchors.right: parent.right
-                    anchors.verticalCenter: undefined
-                }
-            },
-            State {
-                name: "right-novideo"
-                when: !telemetryPanel.bottomMode && !photoVideoControl.visible
-                AnchorChanges {
-                    target:                 telemetryPanel
-                    anchors.top:            undefined
-                    anchors.bottom:         undefined
-                    anchors.left:           parent.left
-                    anchors.right:          parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
-        ]
-        function recalcXPosition() {
-            // First try centered
-            var halfRootWidth   = _root.width / 2
-            var halfPanelWidth  = telemetryPanel.width / 2
-            var leftX           = (halfRootWidth - halfPanelWidth) - _toolsMargin
-            var rightX          = (halfRootWidth + halfPanelWidth) + _toolsMargin
-            if (leftX >= parentToolInsets.leftEdgeBottomInset || rightX <= parentToolInsets.rightEdgeBottomInset ) {
-                // It will fit in the horizontalCenter
-                return halfRootWidth - halfPanelWidth
-            } else {
-                // Anchor to left edge
-                return parentToolInsets.leftEdgeBottomInset + _toolsMargin
-            }
-        }
-    } 
+    
 
 
 

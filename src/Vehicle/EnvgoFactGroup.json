@@ -15,7 +15,8 @@
     "shortDesc":        "Efficiency (%)",
     "type":             "float",
     "decimalPlaces":    1,
-    "default":          null
+    "default":          null,
+    "units":            "%"
 },
 {
     "name":             "gPerW",
@@ -51,10 +52,17 @@
     "type":             "float",
     "decimalPlaces":    1,
     "default":          null
-}
+},
 {
-    "name":             "heightAboveWater",
-    "shortDesc":        "Height Above Water (cm)",
+    "name":             "desiredHeight",
+    "shortDesc":        "Desired Height Above Water (cm)",
+    "type":             "float",
+    "decimalPlaces":    1,
+    "default":          null
+},
+{
+    "name":             "gear",
+    "shortDesc":        "gear (FWD/ RVR)",
     "type":             "float",
     "decimalPlaces":    1,
     "default":          null
