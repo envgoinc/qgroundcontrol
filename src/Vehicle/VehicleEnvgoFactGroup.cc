@@ -85,7 +85,7 @@ void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_messag
         cmdHeight()->setRawValue                    (content.data[50] * 100);
         estHeight()->setRawValue                    (round(content.data[51] * 100));
         elevatorAngle()->setRawValue                (content.data[36] * 180 / M_PI);
-        desiredHeight()->setRawValue                (round(content.data[25])) ;
+        desiredHeight()->setRawValue                (round(content.data[25] * 100));
         gear()->setRawValue                         ((int)content.data[48]);
     }
 }
