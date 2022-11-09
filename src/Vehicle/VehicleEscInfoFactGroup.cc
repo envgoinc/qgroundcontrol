@@ -186,38 +186,38 @@ void VehicleEscInfoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_mess
     failureFlagSecond()->setRawValue    (content.failure_flags[1]);
     failureFlagThird()->setRawValue     (content.failure_flags[2]);
     failureFlagFourth()->setRawValue    (content.failure_flags[3]);
-    // failureFlagFirst()->setRawValue     (content.failure_flags[4]);
-    // failureFlagSecond()->setRawValue    (content.failure_flags[5]);
-    // failureFlagThird()->setRawValue     (content.failure_flags[6]);
-    // failureFlagFourth()->setRawValue    (content.failure_flags[7]);
+    failureFlagFifth()->setRawValue     (content.failure_flags[4]);
+    failureFlagSixth()->setRawValue     (content.failure_flags[5]);
+    failureFlagSeventh()->setRawValue   (content.failure_flags[6]);
+    failureFlagEighth()->setRawValue    (content.failure_flags[7]);
 
     errorCountFirst()->setRawValue      (content.error_count[0]);
     errorCountSecond()->setRawValue     (content.error_count[1]);
     errorCountThird()->setRawValue      (content.error_count[2]);
     errorCountFourth()->setRawValue     (content.error_count[3]);
-    // errorCountFirst()->setRawValue      (content.error_count[4]);
-    // errorCountSecond()->setRawValue     (content.error_count[5]);
-    // errorCountThird()->setRawValue      (content.error_count[6]);
-    // errorCountFourth()->setRawValue     (content.error_count[7]);
+    errorCountFifth()->setRawValue      (content.error_count[4]);
+    errorCountSixth()->setRawValue      (content.error_count[5]);
+    errorCountSeventh()->setRawValue    (content.error_count[6]);
+    errorCountEighth()->setRawValue     (content.error_count[7]);
     
 
     temperatureFirst()->setRawValue     (content.temperature[0]/100);
     temperatureSecond()->setRawValue    (content.temperature[1]/100);
     temperatureThird()->setRawValue     (content.temperature[2]/100);
     temperatureFourth()->setRawValue    (content.temperature[3]/100);
-    // temperatureFirst()->setRawValue     (content.temperature[4]/100);
-    // temperatureSecond()->setRawValue    (content.temperature[5]/100);
-    // temperatureThird()->setRawValue     (content.temperature[6]/100);
-    // temperatureFourth()->setRawValue    (content.temperature[7]/100);
+    temperatureFifth()->setRawValue     (content.temperature[4]/100);
+    temperatureSixth()->setRawValue     (content.temperature[5]/100);
+    temperatureSeventh()->setRawValue   (content.temperature[6]/100);
+    temperatureEighth()->setRawValue    (content.temperature[7]/100);
     
     stateFirst()->setRawValue     (static_cast<double>(content.state[0]));
     stateSecond()->setRawValue    (static_cast<double>(content.state[1]));
     stateThird()->setRawValue     (static_cast<double>(content.state[2]));
     stateFourth()->setRawValue    (static_cast<double>(content.state[3]));
-    // stateFirst()->setRawValue     (static_cast<double>(content.state[4]));
-    // stateSecond()->setRawValue    (static_cast<double>(content.state[5]));
-    // stateThird()->setRawValue     (static_cast<double>(content.state[6]));
-    // stateFourth()->setRawValue    (static_cast<double>(content.state[7]));
+    stateFifth()->setRawValue     (static_cast<double>(content.state[4]));
+    stateSixth()->setRawValue     (static_cast<double>(content.state[5]));
+    stateSeventh()->setRawValue   (static_cast<double>(content.state[6]));
+    stateEighth()->setRawValue    (static_cast<double>(content.state[7]));
 
     
 

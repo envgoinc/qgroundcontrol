@@ -117,27 +117,27 @@ void VehicleEscStatusFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_me
         rpmSecond()->setRawValue                    (content.rpm[1]);
         rpmThird()->setRawValue                     (content.rpm[2]);
         rpmFourth()->setRawValue                    (content.rpm[3]);
-        // rpmFirst()->setRawValue                     (content.rpm[4]);
-        // rpmSecond()->setRawValue                    (content.rpm[5]);
-        // rpmThird()->setRawValue                     (content.rpm[6]);
-        // rpmFourth()->setRawValue                    (content.rpm[7]);
+        rpmFifth()->setRawValue                     (content.rpm[4]);
+        rpmSixth()->setRawValue                     (content.rpm[5]);
+        rpmSeventh()->setRawValue                   (content.rpm[6]);
+        rpmEighth()->setRawValue                    (content.rpm[7]);
 
         currentFirst()->setRawValue                 (content.current[0]);
         currentSecond()->setRawValue                (content.current[1]);
         currentThird()->setRawValue                 (content.current[2]);
         currentFourth()->setRawValue                (content.current[3]);
-        // currentFirst()->setRawValue                 (content.current[4]);
-        // currentSecond()->setRawValue                (content.current[5]);
-        // currentThird()->setRawValue                 (content.current[6]);
-        // currentFourth()->setRawValue                (content.current[7]);
+        currentFifth()->setRawValue                 (content.current[4]);
+        currentSixth()->setRawValue                 (content.current[5]);
+        currentSeventh()->setRawValue               (content.current[6]);
+        currentEighth()->setRawValue                (content.current[7]);
 
-        currentFirst()->setRawValue                 (content.current[0]);
-        currentSecond()->setRawValue                (content.current[1]);
-        currentThird()->setRawValue                 (content.current[2]);
-        currentFourth()->setRawValue                (content.current[3]);
-    //     currentFirst()->setRawValue                 (content.current[4]);
-    //     currentSecond()->setRawValue                (content.current[5]);
-    //     currentThird()->setRawValue                 (content.current[6]);
-    //     currentFourth()->setRawValue                (content.current[7]);
+        currentFirst()->setRawValue                 (content.voltage[0]);
+        voltageSecond()->setRawValue                (content.voltage[1]);
+        voltageThird()->setRawValue                 (content.voltage[2]);
+        voltageFourth()->setRawValue                (content.voltage[3]);
+        voltageFifth()->setRawValue                 (content.voltage[4]);
+        voltageSixth()->setRawValue                 (content.voltage[5]);
+        voltageSeventh()->setRawValue               (content.voltage[6]);
+        voltageEighth()->setRawValue                (content.voltage[7]);
     }
 }
