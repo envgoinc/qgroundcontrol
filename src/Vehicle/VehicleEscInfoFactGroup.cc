@@ -45,16 +45,37 @@ const char* VehicleEscInfoFactGroup::_failureFlagFirstFactName =                
 const char* VehicleEscInfoFactGroup::_failureFlagSecondFactName =               "failureFlag2";
 const char* VehicleEscInfoFactGroup::_failureFlagThirdFactName =                "failureFlag3";
 const char* VehicleEscInfoFactGroup::_failureFlagFourthFactName  =              "failureFlag4";
+const char* VehicleEscInfoFactGroup::_failureFlagFifthFactName  =               "failureFlag5";
+const char* VehicleEscInfoFactGroup::_failureFlagSixthFactName  =               "failureFlag6";
+const char* VehicleEscInfoFactGroup::_failureFlagSeventhFactName  =             "failureFlag7";
+const char* VehicleEscInfoFactGroup::_failureFlagEighthFactName  =              "failureFlag8";
 
 const char* VehicleEscInfoFactGroup::_errorCountFirstFactName =                 "errorCount1";
 const char* VehicleEscInfoFactGroup::_errorCountSecondFactName =                "errorCount2";
 const char* VehicleEscInfoFactGroup::_errorCountThirdFactName =                 "errorCount3";
 const char* VehicleEscInfoFactGroup::_errorCountFourthFactName =                "errorCount4";
+const char* VehicleEscInfoFactGroup::_errorCountFifthFactName  =                "errorCount5";
+const char* VehicleEscInfoFactGroup::_errorCountSixthFactName  =                "errorCount6";
+const char* VehicleEscInfoFactGroup::_errorCountSeventhFactName  =              "errorCount7";
+const char* VehicleEscInfoFactGroup::_errorCountEighthFactName  =               "errorCount8";
 
 const char* VehicleEscInfoFactGroup::_temperatureFirstFactName =                "temperature1";
 const char* VehicleEscInfoFactGroup::_temperatureSecondFactName =               "temperature2";
 const char* VehicleEscInfoFactGroup::_temperatureThirdFactName =                "temperature3";
 const char* VehicleEscInfoFactGroup::_temperatureFourthFactName =               "temperature4";
+const char* VehicleEscInfoFactGroup::_temperatureFifthFactName  =               "temperature5";
+const char* VehicleEscInfoFactGroup::_temperatureSixthFactName  =               "temperature6";
+const char* VehicleEscInfoFactGroup::_temperatureSeventhFactName  =             "temperature7";
+const char* VehicleEscInfoFactGroup::_temperatureEighthFactName  =              "temperature8";
+
+const char* VehicleEscInfoFactGroup::_stateFirstFactName =                "state1";
+const char* VehicleEscInfoFactGroup::_stateSecondFactName =               "state2";
+const char* VehicleEscInfoFactGroup::_stateThirdFactName =                "state3";
+const char* VehicleEscInfoFactGroup::_stateFourthFactName =               "state4";
+const char* VehicleEscInfoFactGroup::_stateFifthFactName  =               "state5";
+const char* VehicleEscInfoFactGroup::_stateSixthFactName  =               "state6";
+const char* VehicleEscInfoFactGroup::_stateSeventhFactName  =             "state7";
+const char* VehicleEscInfoFactGroup::_stateEighthFactName  =              "state8";
 
 VehicleEscInfoFactGroup::VehicleEscInfoFactGroup(QObject* parent)
     : FactGroup                         (1000, ":/json/Vehicle/EscInfoFactGroup.json", parent)
@@ -69,16 +90,37 @@ VehicleEscInfoFactGroup::VehicleEscInfoFactGroup(QObject* parent)
     , _failureFlagSecondFact             (0, _failureFlagSecondFactName, FactMetaData::valueTypeFloat)
     , _failureFlagThirdFact              (0, _failureFlagThirdFactName, FactMetaData::valueTypeFloat)
     , _failureFlagFourthFact             (0, _failureFlagFourthFactName, FactMetaData::valueTypeFloat)
+    , _failureFlagFifthFact              (0, _failureFlagFifthFactName, FactMetaData::valueTypeFloat)
+    , _failureFlagSixthFact              (0, _failureFlagSixthFactName, FactMetaData::valueTypeFloat)
+    , _failureFlagSeventhFact            (0, _failureFlagSeventhFactName, FactMetaData::valueTypeFloat)
+    , _failureFlagEighthFact             (0, _failureFlagEighthFactName, FactMetaData::valueTypeFloat)
 
     , _errorCountFirstFact               (0, _errorCountFirstFactName, FactMetaData::valueTypeFloat)
     , _errorCountSecondFact              (0, _errorCountSecondFactName, FactMetaData::valueTypeFloat)
     , _errorCountThirdFact               (0, _errorCountThirdFactName, FactMetaData::valueTypeFloat)
     , _errorCountFourthFact              (0, _errorCountFourthFactName, FactMetaData::valueTypeFloat)
+    , _errorCountFifthFact               (0, _errorCountFifthFactName, FactMetaData::valueTypeFloat)
+    , _errorCountSixthFact               (0, _errorCountSixthFactName, FactMetaData::valueTypeFloat)
+    , _errorCountSeventhFact             (0, _errorCountSeventhFactName, FactMetaData::valueTypeFloat)
+    , _errorCountEighthFact              (0, _errorCountEighthFactName, FactMetaData::valueTypeFloat)
 
     , _temperatureFirstFact              (0, _temperatureFirstFactName, FactMetaData::valueTypeFloat)
     , _temperatureSecondFact             (0, _temperatureSecondFactName, FactMetaData::valueTypeFloat)
     , _temperatureThirdFact              (0, _temperatureThirdFactName, FactMetaData::valueTypeFloat)
     , _temperatureFourthFact             (0, _temperatureFourthFactName, FactMetaData::valueTypeFloat)
+    , _temperatureFifthFact              (0, _temperatureFifthFactName, FactMetaData::valueTypeFloat)
+    , _temperatureSixthFact              (0, _temperatureSixthFactName, FactMetaData::valueTypeFloat)
+    , _temperatureSeventhFact            (0, _temperatureSeventhFactName, FactMetaData::valueTypeFloat)
+    , _temperatureEighthFact             (0, _temperatureEighthFactName, FactMetaData::valueTypeFloat)
+
+    , _stateFirstFact                    (0, _stateFirstFactName, FactMetaData::valueTypeFloat)
+    , _stateSecondFact                   (0, _stateSecondFactName, FactMetaData::valueTypeFloat)
+    , _stateThirdFact                    (0, _stateThirdFactName, FactMetaData::valueTypeFloat)
+    , _stateFourthFact                   (0, _stateFourthFactName, FactMetaData::valueTypeFloat)
+    , _stateFifthFact                    (0, _stateFifthFactName, FactMetaData::valueTypeFloat)
+    , _stateSixthFact                    (0, _stateSixthFactName, FactMetaData::valueTypeFloat)
+    , _stateSeventhFact                  (0, _stateSeventhFactName, FactMetaData::valueTypeFloat)
+    , _stateEighthFact                   (0, _stateEighthFactName, FactMetaData::valueTypeFloat)
 {
    _addFact(&_indexFact,                        _indexFactName);
 
@@ -91,16 +133,37 @@ VehicleEscInfoFactGroup::VehicleEscInfoFactGroup(QObject* parent)
    _addFact(&_failureFlagSecondFact,            _failureFlagSecondFactName);
    _addFact(&_failureFlagThirdFact,             _failureFlagThirdFactName);
    _addFact(&_failureFlagFourthFact,            _failureFlagFourthFactName);
+   _addFact(&_failureFlagFifthFact,             _failureFlagFifthFactName);
+   _addFact(&_failureFlagSixthFact,             _failureFlagSixthFactName);
+   _addFact(&_failureFlagSeventhFact,           _failureFlagSeventhFactName);
+   _addFact(&_failureFlagEighthFact,            _failureFlagEighthFactName);
 
    _addFact(&_errorCountFirstFact,              _errorCountFirstFactName);
    _addFact(&_errorCountSecondFact,             _errorCountSecondFactName);
    _addFact(&_errorCountThirdFact,              _errorCountThirdFactName);
    _addFact(&_errorCountFourthFact,             _errorCountFourthFactName);
+   _addFact(&_errorCountFifthFact,             _errorCountFifthFactName);
+   _addFact(&_errorCountSixthFact,             _errorCountSixthFactName);
+   _addFact(&_errorCountSeventhFact,           _errorCountSeventhFactName);
+   _addFact(&_errorCountEighthFact,            _errorCountEighthFactName);
 
    _addFact(&_temperatureFirstFact,             _temperatureFirstFactName);
    _addFact(&_temperatureSecondFact,            _temperatureSecondFactName);
    _addFact(&_temperatureThirdFact,             _temperatureThirdFactName);
    _addFact(&_temperatureFourthFact,            _temperatureFourthFactName);
+   _addFact(&_temperatureFifthFact,             _temperatureFifthFactName);
+   _addFact(&_temperatureSixthFact,             _temperatureSixthFactName);
+   _addFact(&_temperatureSeventhFact,           _temperatureSeventhFactName);
+   _addFact(&_temperatureEighthFact,            _temperatureEighthFactName);
+
+   _addFact(&_stateFirstFact,                   _stateFirstFactName);
+   _addFact(&_stateSecondFact,                  _stateSecondFactName);
+   _addFact(&_stateThirdFact,                   _stateThirdFactName);
+   _addFact(&_stateFourthFact,                  _stateFourthFactName);
+   _addFact(&_stateFifthFact,                   _stateFifthFactName);
+   _addFact(&_stateSixthFact,                   _stateSixthFactName);
+   _addFact(&_stateSeventhFact,                 _stateSeventhFactName);
+   _addFact(&_stateEighthFact,                  _stateEighthFactName);
 }
 
 void VehicleEscInfoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_message_t& message)
@@ -123,14 +186,40 @@ void VehicleEscInfoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_mess
     failureFlagSecond()->setRawValue    (content.failure_flags[1]);
     failureFlagThird()->setRawValue     (content.failure_flags[2]);
     failureFlagFourth()->setRawValue    (content.failure_flags[3]);
+    failureFlagFifth()->setRawValue     (content.failure_flags[4]);
+    failureFlagSixth()->setRawValue     (content.failure_flags[5]);
+    failureFlagSeventh()->setRawValue   (content.failure_flags[6]);
+    failureFlagEighth()->setRawValue    (content.failure_flags[7]);
 
     errorCountFirst()->setRawValue      (content.error_count[0]);
     errorCountSecond()->setRawValue     (content.error_count[1]);
     errorCountThird()->setRawValue      (content.error_count[2]);
     errorCountFourth()->setRawValue     (content.error_count[3]);
+    errorCountFifth()->setRawValue      (content.error_count[4]);
+    errorCountSixth()->setRawValue      (content.error_count[5]);
+    errorCountSeventh()->setRawValue    (content.error_count[6]);
+    errorCountEighth()->setRawValue     (content.error_count[7]);
+    
 
     temperatureFirst()->setRawValue     (content.temperature[0]/100);
     temperatureSecond()->setRawValue    (content.temperature[1]/100);
     temperatureThird()->setRawValue     (content.temperature[2]/100);
     temperatureFourth()->setRawValue    (content.temperature[3]/100);
+    temperatureFifth()->setRawValue     (content.temperature[4]/100);
+    temperatureSixth()->setRawValue     (content.temperature[5]/100);
+    temperatureSeventh()->setRawValue   (content.temperature[6]/100);
+    temperatureEighth()->setRawValue    (content.temperature[7]/100);
+    
+    stateFirst()->setRawValue     (static_cast<double>(content.state[0]));
+    stateSecond()->setRawValue    (static_cast<double>(content.state[1]));
+    stateThird()->setRawValue     (static_cast<double>(content.state[2]));
+    stateFourth()->setRawValue    (static_cast<double>(content.state[3]));
+    stateFifth()->setRawValue     (static_cast<double>(content.state[4]));
+    stateSixth()->setRawValue     (static_cast<double>(content.state[5]));
+    stateSeventh()->setRawValue   (static_cast<double>(content.state[6]));
+    stateEighth()->setRawValue    (static_cast<double>(content.state[7]));
+
+    
+
+    
 }

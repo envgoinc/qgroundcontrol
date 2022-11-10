@@ -51,16 +51,19 @@ Item {
     property rect   _centerViewport:        Qt.rect(0, 0, width, height)
     property real   _rightPanelWidth:       ScreenTools.defaultFontPixelWidth * 30
 
-    property string _estHeight:             _activeVehicle ? (isNaN(_activeVehicle.envgo.estHeight.rawValue) ? "0.0" :"Est: " +  _activeVehicle.envgo.estHeight.rawValue + ' ' + _activeVehicle.envgo.estHeight.units) : ' '
-    property string _desiredHeight:         _activeVehicle ? (isNaN(_activeVehicle.envgo.desiredHeight.rawValue) ? "0.0" : "Des: " + _activeVehicle.envgo.desiredHeight.rawValue + ' ' + _activeVehicle.envgo.desiredHeight.units) : ' '
-    property string _distanceTravelled:     _activeVehicle ? (isNaN(_activeVehicle.flightDistance.value) ? "FlightDistance Error" : _activeVehicle.flightDistance.value.toFixed(1)) + ' ' + _activeVehicle.flightDistance.units : ' '
-    property string _flightMode:            _activeVehicle ? _activeVehicle.flightMode : ' '
-    property string _escTemperature:        _activeVehicle ? (isNaN(_activeVehicle.escInfo.temperatureFirst.rawValue) ? "Esc Temp: 0.0" :"Esc Temp: " + _activeVehicle.escInfo.temperatureFirst.rawValue) + ' ' + _activeVehicle.escInfo.temperatureFirst.units : ' '
-    property string _batteryTemperature:    _activeVehicle ? (isNaN(globals.activeVehicle.batteries.get(1).temperature.rawValue) ? "0.0" : globals.activeVehicle.batteries.get(1).temperature.rawValue) + ' ' + globals.activeVehicle.batteries.get(1).temperature.units : ' '
-    property string _groundSpeed:           _activeVehicle ? (isNaN(_activeVehicle.groundSpeed.value) ? "0.0 m/s" : _activeVehicle.groundSpeed.value.toFixed(1)) + ' ' + _activeVehicle.groundSpeed.units : "Connect To Vehicle"
-    property string _gear:                  _activeVehicle ? (isNaN(_activeVehicle.envgo.gear.rawValue) ? "N/A" :  _activeVehicle.envgo.gear.rawValue) : ' '
-    property string _efficiency:            _activeVehicle ? (isNaN(_activeVehicle.envgo.efficiency.rawValue) ? "0.0" : _activeVehicle.envgo.efficiency.rawValue) + ' ' + _activeVehicle.envgo.efficiency.units : ' '
-    property string _heading:               _activeVehicle   ? _activeVehicle.heading.rawValue : ' '
+    property string _estHeight:             _activeVehicle ? (isNaN(_activeVehicle.envgo.estHeight.rawValue)                        ? "0.0"                     :   "Est: " + _activeVehicle.envgo.estHeight.rawValue + ' ' + "cm")                                                                 : ' '
+    property string _desiredHeight:         _activeVehicle ? (isNaN(_activeVehicle.envgo.desiredHeight.rawValue)                    ? "0.0"                     :   "Des: " + _activeVehicle.envgo.desiredHeight.rawValue + ' ' + "cm")                                                             : ' '
+    property string _distanceTravelled:     _activeVehicle ? (isNaN(_activeVehicle.flightDistance.value)                            ? "FlightDistance Error"    :   _activeVehicle.flightDistance.value.toFixed(1)) + ' ' + _activeVehicle.flightDistance.units                                     : ' '
+    property string _escState0:             _activeVehicle ? (isNaN(_activeVehicle.escInfo.stateFirst.value)                        ? "Esc 0: N/A"              :   "Esc 0: " + _activeVehicle.escInfo.stateFirst.value)                                                                            : ' '
+    property string _escState1:             _activeVehicle ? (isNaN(_activeVehicle.escInfo.stateSecond.value)                       ? "Esc 1: N/A"              :   "Esc 1: " + _activeVehicle.escInfo.stateSecond.value)                                                                           : ' '
+    property string _escState2:             _activeVehicle ? (isNaN(_activeVehicle.escInfo.stateThird.value)                        ? "Esc 2: N/A"              :   "Esc 2: " + _activeVehicle.escInfo.stateThird.value)                                                                            : ' '
+    property string _escState3:             _activeVehicle ? (isNaN(_activeVehicle.escInfo.stateFourth.value)                       ? "Esc 3: N/A"              :   "Esc 3: " + _activeVehicle.escInfo.stateFourth.value)                                                                           : ' '
+    property string _escState4:             _activeVehicle ? (isNaN(_activeVehicle.escInfo.stateFifth.value)                        ? "Esc 4: N/A"              :   "Esc 4: " + _activeVehicle.escInfo.stateFifth.value)                                                                            : ' '
+    property string _escTemperature:        _activeVehicle ? (isNaN(_activeVehicle.escInfo.temperatureFirst.rawValue)               ? "Esc Temp: 0.0"           :   "Esc Temp: " + _activeVehicle.escInfo.temperatureFirst.rawValue) + ' ' + _activeVehicle.escInfo.temperatureFirst.units          : ' '
+    property string _groundSpeed:           _activeVehicle ? (isNaN(_activeVehicle.groundSpeed.value)                               ? "0.0 m/s"                 :   _activeVehicle.groundSpeed.value.toFixed(1)) + ' ' + _activeVehicle.groundSpeed.units                                           : "Connect To Vehicle"
+    property string _gear:                  _activeVehicle ? (isNaN(_activeVehicle.envgo.gear.rawValue)                             ? "N/A"                     :   _activeVehicle.envgo.gear.rawValue)                                                                                             : ' '
+    property string _efficiency:            _activeVehicle ? (isNaN(_activeVehicle.envgo.efficiency.rawValue)                       ? "0.0"                     :   _activeVehicle.envgo.efficiency.rawValue) + ' ' + _activeVehicle.envgo.efficiency.units                                         : ' '
+    property string _heading:               _activeVehicle ? _activeVehicle.heading.rawValue : ' '
     
 
     
@@ -240,16 +243,16 @@ Item {
         border.color: "black"
     }
 
-    // Flight Mode
+    // ESC State
     Rectangle{
-        id: flightMode
+        id: escState
         anchors{
             left: distanceTravelled.right
             top: parent.top
         }
         Text {
-            id: flightModeTitle
-            text: qsTr("Flight Mode")
+            id: escStateTitle
+            text: qsTr("ESC State")
             anchors{
                 top: parent.top
                 left: parent.left
@@ -260,17 +263,69 @@ Item {
             font.underline: true
         }
         Text {
+            id:state0
             anchors{
-                top: flightModeTitle.bottom
-                bottom: parent.bottom
+                top: escStateTitle.bottom
                 left: parent.left
                 right: parent.right
             }
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.bold: true
-            font.pointSize: 30
-            text: _flightMode
+            font.pointSize: 20
+            text: _escState0
+        }
+        Text {
+            id:state1
+            anchors{
+                top: state0.bottom
+                left: parent.left
+                right: parent.right
+            }
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.bold: true
+            font.pointSize: 20 
+            text: _escState1
+        }
+        Text {
+            id:state2
+            anchors{
+                top: state1.bottom
+                left: parent.left
+                right: parent.right
+            }
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.bold: true
+            font.pointSize: 20
+            text: _escState2
+        }
+        Text {
+            id:state3
+            anchors{
+                top: state2.bottom
+                left: parent.left
+                right: parent.right
+            }
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.bold: true
+            font.pointSize: 20
+            text: _escState3
+        }
+        Text {
+            id:state4
+            anchors{
+                top: state3.bottom
+                left: parent.left
+                right: parent.right
+            }
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.bold: true
+            font.pointSize: 20
+            text: _escState4
         }
         height: parent.height / 3
         width: parent.width / 4
@@ -485,6 +540,13 @@ Item {
             left: parent.left
             top: temperature.bottom
         }
+        color: {
+            switch (_gear - 0) {
+                case 0: return "light blue"
+                case 1: return "green"
+                case -1: return "yellow"
+            }
+        }
         Text {
             id: gearTitle
             text: qsTr("Gear")
@@ -521,7 +583,7 @@ Item {
         }
         height: parent.height / 3
         width: parent.width / 4
-        color: "transparent"
+        //color: "transparent"
         border.color: "black"
     }
 
