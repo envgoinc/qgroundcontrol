@@ -131,7 +131,7 @@ void VehicleEscStatusFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_me
         currentSeventh()->setRawValue               (content.current[6]);
         currentEighth()->setRawValue                (content.current[7]);
 
-        currentFirst()->setRawValue                 (content.voltage[0]);
+        voltageFirst()->setRawValue                 (content.voltage[0]);
         voltageSecond()->setRawValue                (content.voltage[1]);
         voltageThird()->setRawValue                 (content.voltage[2]);
         voltageFourth()->setRawValue                (content.voltage[3]);

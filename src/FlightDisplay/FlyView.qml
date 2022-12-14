@@ -102,15 +102,6 @@ Item {
         guidedValueSlider:     _guidedValueSlider
     }
 
-    /*GuidedActionConfirm {
-        id:                         guidedActionConfirm
-        anchors.margins:            _margins
-        anchors.bottom:             parent.bottom
-        anchors.horizontalCenter:   parent.horizontalCenter
-        z:                          QGroundControl.zOrderTopMost
-        guidedController:           _guidedController
-        guidedValueSlider:             _guidedValueSlider
-    }*/
 
     GuidedActionList {
         id:                         guidedActionList
