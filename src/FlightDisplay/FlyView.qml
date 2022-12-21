@@ -102,15 +102,6 @@ Item {
         guidedValueSlider:     _guidedValueSlider
     }
 
-    /*GuidedActionConfirm {
-        id:                         guidedActionConfirm
-        anchors.margins:            _margins
-        anchors.bottom:             parent.bottom
-        anchors.horizontalCenter:   parent.horizontalCenter
-        z:                          QGroundControl.zOrderTopMost
-        guidedController:           _guidedController
-        guidedValueSlider:             _guidedValueSlider
-    }*/
 
     GuidedActionList {
         id:                         guidedActionList
@@ -133,15 +124,6 @@ Item {
         width:              ScreenTools.defaultFontPixelWidth * 10
         color:              qgcPal.window
         visible:            false
-    }
-
-    FlyViewMap {
-        id:                     mapControl
-        planMasterController:   _planController
-        rightPanelWidth:        ScreenTools.defaultFontPixelHeight * 9
-        pipMode:                !_mainWindowIsMap
-        toolInsets:             customOverlay.totalToolInsets
-        mapName:                "FlightDisplayView"
     }
 
     FlyViewVideo {

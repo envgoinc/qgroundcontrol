@@ -67,6 +67,34 @@
         "default":          null
     },
     {
+        "name":             "failureFlagFifth",
+        "shortDesc":        "Bitmap of ESC failure flags",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "failureFlagSixth",
+        "shortDesc":        "Bitmap of ESC failure flags",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "failureFlagSeventh",
+        "shortDesc":        "Bitmap of ESC failure flags",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "failureFlagEighth",
+        "shortDesc":        "Bitmap of ESC failure flags",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
         "name":             "errorCountFirst",
         "shortDesc":        "Number of reported errors by ESC",
         "type":             "float",
@@ -89,6 +117,34 @@
     },
     {
         "name":             "errorCountFourth",
+        "shortDesc":        "Number of reported errors by ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "errorCountFifth",
+        "shortDesc":        "Number of reported errors by ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "errorCountSixth",
+        "shortDesc":        "Number of reported errors by ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "errorCountSeventh",
+        "shortDesc":        "Number of reported errors by ESC",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "errorCountEighth",
         "shortDesc":        "Number of reported errors by ESC",
         "type":             "float",
         "decimalPlaces":    0,
@@ -120,6 +176,90 @@
         "shortDesc":        "Temperature",
         "type":             "float",
         "decimalPlaces":    2,
+        "default":          null
+    },
+    {
+        "name":             "temperatureFifth",
+        "shortDesc":        "Temperature",
+        "type":             "float",
+        "decimalPlaces":    2,
+        "default":          null
+    },
+    {
+        "name":             "temperatureSixth",
+        "shortDesc":        "Temperature",
+        "type":             "float",
+        "decimalPlaces":    2,
+        "default":          null
+    },
+    {
+        "name":             "temperatureSeventh",
+        "shortDesc":        "Temperature",
+        "type":             "float",
+        "decimalPlaces":    2,
+        "default":          null
+    },
+    {
+        "name":             "temperatureEighth",
+        "shortDesc":        "Temperature",
+        "type":             "float",
+        "decimalPlaces":    2,
+        "default":          null
+    },
+    {
+        "name":             "stateFirst",
+        "shortDesc":        "state",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "stateSecond",
+        "shortDesc":        "state",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "stateThird",
+        "shortDesc":        "state",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "stateFourth",
+        "shortDesc":        "state",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "stateFifth",
+        "shortDesc":        "state",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "stateSixth",
+        "shortDesc":        "state",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "stateSeventh",
+        "shortDesc":        "state",
+        "type":             "float",
+        "decimalPlaces":    0,
+        "default":          null
+    },
+    {
+        "name":             "stateEighth",
+        "shortDesc":        "state",
+        "type":             "float",
+        "decimalPlaces":    0,
         "default":          null
     }
 ]

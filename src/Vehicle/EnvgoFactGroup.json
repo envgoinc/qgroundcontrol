@@ -15,7 +15,8 @@
     "shortDesc":        "Efficiency (%)",
     "type":             "float",
     "decimalPlaces":    1,
-    "default":          null
+    "default":          null,
+    "units":            "%"
 },
 {
     "name":             "gPerW",
@@ -43,11 +44,27 @@
     "shortDesc":        "Est Height (cm)",
     "type":             "float",
     "decimalPlaces":    1,
-    "default":          null
+    "default":          null,
+    "units":            "cm"
 },
 {
     "name":             "elevatorAngle",
     "shortDesc":        "Elevator Angle (deg)",
+    "type":             "float",
+    "decimalPlaces":    1,
+    "default":          null
+},
+{
+    "name":             "desiredHeight",
+    "shortDesc":        "Desired Height Above Water (cm)",
+    "type":             "float",
+    "decimalPlaces":    1,
+    "default":          null,
+    "units":            "cm"
+},
+{
+    "name":             "gear",
+    "shortDesc":        "gear (FWD/ RVR)",
     "type":             "float",
     "decimalPlaces":    1,
     "default":          null

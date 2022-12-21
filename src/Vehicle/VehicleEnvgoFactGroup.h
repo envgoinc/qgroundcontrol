@@ -52,14 +52,18 @@ class VehicleEnvgoFactGroup : public FactGroup
         Q_PROPERTY(Fact* cmdHeight          READ cmdHeight          CONSTANT)
         Q_PROPERTY(Fact* estHeight          READ estHeight          CONSTANT)
         Q_PROPERTY(Fact* elevatorAngle      READ elevatorAngle      CONSTANT)
+        Q_PROPERTY(Fact* desiredHeight      READ desiredHeight      CONSTANT)
+        Q_PROPERTY(Fact* gear               READ gear               CONSTANT)
         
-        Fact* mechPwr                       () { return &_mechPwrFact; } //envgo
-        Fact* efficiency                    () { return &_efficiencyFact; } //envgo
-        Fact* gPerW                         () { return &_gPerWFact; } //envgo
-        Fact* desiredPitch                  () { return &_desiredPitchFact; } //envgo
-        Fact* cmdHeight                     () { return &_cmdHeightFact; } //envgo
-        Fact* estHeight                     () { return &_estHeightFact; } //envgo
-        Fact* elevatorAngle                 () { return &_elevatorAngleFact; } //envgo
+        Fact* mechPwr                       () { return &_mechPwrFact; }
+        Fact* efficiency                    () { return &_efficiencyFact; }
+        Fact* gPerW                         () { return &_gPerWFact; }
+        Fact* desiredPitch                  () { return &_desiredPitchFact; }
+        Fact* cmdHeight                     () { return &_cmdHeightFact; }
+        Fact* estHeight                     () { return &_estHeightFact; }
+        Fact* elevatorAngle                 () { return &_elevatorAngleFact; }
+        Fact* desiredHeight                 () { return &_desiredHeightFact; }
+        Fact* gear                          () { return &_gearFact; }
 
 
         // Overrides from FactGroup
@@ -72,6 +76,8 @@ class VehicleEnvgoFactGroup : public FactGroup
         static const char* _cmdHeightFactName;
         static const char* _estHeightFactName;
         static const char* _elevatorAngleFactName;
+        static const char* _desiredHeightFactName;
+        static const char* _gearFactName;
 
     private:
         Fact _mechPwrFact;
@@ -81,6 +87,8 @@ class VehicleEnvgoFactGroup : public FactGroup
         Fact _cmdHeightFact;
         Fact _estHeightFact;
         Fact _elevatorAngleFact;
+        Fact _desiredHeightFact;
+        Fact _gearFact;
 };
 
 
