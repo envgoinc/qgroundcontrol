@@ -125,15 +125,6 @@ Item {
         color:              qgcPal.window
         visible:            false
     }
-    /*
-    FlyViewMap {
-        id:                     mapControl
-        planMasterController:   _planController
-        rightPanelWidth:        ScreenTools.defaultFontPixelHeight * 9
-        pipMode:                !_mainWindowIsMap
-        toolInsets:             customOverlay.totalToolInsets
-        mapName:                "FlightDisplayView"
-    }*/
 
     FlyViewVideo {
         id: videoControl
