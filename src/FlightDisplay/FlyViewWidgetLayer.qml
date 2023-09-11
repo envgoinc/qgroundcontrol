@@ -53,6 +53,7 @@ Item {
 
     property string _estHeight:             _activeVehicle ? (isNaN(_activeVehicle.envgo.estHeight.rawValue)                        ? "0.0"                     :   "Est: " + _activeVehicle.envgo.estHeight.rawValue + ' ' + "cm")                                                                 : ' '
     property string _desiredHeight:         _activeVehicle ? (isNaN(_activeVehicle.envgo.desiredHeight.rawValue)                    ? "0.0"                     :   "Des: " + _activeVehicle.envgo.desiredHeight.rawValue + ' ' + "cm")                                                             : ' '
+    property string _sternHeight:           _activeVehicle ? (isNaN(_activeVehicle.envgo.sternHeight.rawValue)                      ? "0.0"                     :   "Strn: " + _activeVehicle.envgo.sternHeight.rawValue + ' ' + "cm")                                                              : ' '
     property string _distanceTravelled:     _activeVehicle ? (isNaN(_activeVehicle.flightDistance.value)                            ? "FlightDistance Error"    :   _activeVehicle.flightDistance.value.toFixed(1)) + ' ' + _activeVehicle.flightDistance.units                                     : ' '
     property string _escState0:             _activeVehicle ? (isNaN(_activeVehicle.escInfo.stateFirst.value)                        ? "Esc 0: N/A"              :   "Esc 0: " + _activeVehicle.escInfo.stateFirst.value)                                                                            : ' '
     property string _escState1:             _activeVehicle ? (isNaN(_activeVehicle.escInfo.stateSecond.value)                       ? "Esc 1: N/A"              :   "Esc 1: " + _activeVehicle.escInfo.stateSecond.value)                                                                           : ' '
@@ -63,6 +64,8 @@ Item {
     property string _groundSpeed:           _activeVehicle ? (isNaN(_activeVehicle.groundSpeed.value)                               ? "0.0 m/s"                 :   _activeVehicle.groundSpeed.value.toFixed(1)) + ' ' + _activeVehicle.groundSpeed.units                                           : "Connect To Vehicle"
     property string _gear:                  _activeVehicle ? (isNaN(_activeVehicle.envgo.gear.rawValue)                             ? "N/A"                     :   _activeVehicle.envgo.gear.rawValue)                                                                                             : ' '
     property string _efficiency:            _activeVehicle ? (isNaN(_activeVehicle.envgo.efficiency.rawValue)                       ? "0.0"                     :   _activeVehicle.envgo.efficiency.rawValue) + ' ' + _activeVehicle.envgo.efficiency.units                                         : ' '
+    property string _sonarFront:            _activeVehicle ? (isNaN(_activeVehicle.envgo.sonarFront.rawValue)                       ? "0.0"                     :   "Snr Front: " + _activeVehicle.envgo.sonarFront.rawValue + ' ' + "cm")                                                          : ' '
+    property string _sonarBack:             _activeVehicle ? (isNaN(_activeVehicle.envgo.sonarBack.rawValue)                        ? "0.0"                     :   "Snr Back: " + _activeVehicle.envgo.sonarBack.rawValue + ' ' + "cm")                                                            : ' '
     property string _heading:               _activeVehicle ? _activeVehicle.heading.rawValue : ' '
     
 
@@ -179,24 +182,39 @@ Item {
                     right: parent.right
                 }
                 horizontalAlignment: Text.AlignHCenter
-                //verticalAlignment: Text.AlignVCenter
+                verticalAlignment: Text.AlignVCenter
                 font.bold: true
-                font.pointSize: 30
+                font.pointSize: 20
                 text:_desiredHeight
             }
             
             Text {
+                id:estHeight
                 anchors{
                     top: desHeight.bottom
-                    bottom: parent.bottom
+                    // bottom: parent.bottom
                     left: parent.left
                     right: parent.right
                 }
                 horizontalAlignment: Text.AlignHCenter
-                //verticalAlignment: Text.AlignVCenter
+                verticalAlignment: Text.AlignVCenter
                 font.bold: true
-                font.pointSize: 30
+                font.pointSize: 20
                 text: _estHeight
+            }
+
+            Text {
+                anchors{
+                    top: estHeight.bottom
+                    // bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.bold: true
+                font.pointSize: 20
+                text: _sternHeight
             }
         }
         height: parent.height / 3
@@ -461,6 +479,30 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: 20
             font.underline: true
+        }
+        Text {
+            id:sonarFront
+            anchors{
+                top: statsTitle.bottom
+                left: parent.left
+                right: parent.right
+            }
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 20
+            font.bold: true
+            text: _sonarFront
+        }
+        Text {
+            id:sonarBack
+            anchors{
+                top: sonarFront.bottom
+                left: parent.left
+                right: parent.right
+            }
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 20
+            font.bold: true
+            text: _sonarBack
         }
         TelemetryValuesBar {
             id:                 telemetryPanel
