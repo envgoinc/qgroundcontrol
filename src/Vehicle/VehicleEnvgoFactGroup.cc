@@ -86,7 +86,7 @@ void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_messag
         mavlink_msg_debug_vect_decode(&message, &content);
 
         mechPwr()->setRawValue                      (content.x);
-        efficiency()->setRawValue                   (content.y);
+        efficiency()->setRawValue                   (round(content.y));
         gPerW()->setRawValue                        (content.z);
     }  else if (message.msgid == MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY) {
         mavlink_debug_float_array_t content;
