@@ -43,6 +43,9 @@ const char* VehicleEnvgoFactGroup::_estHeightFactName =                         
 const char* VehicleEnvgoFactGroup::_elevatorAngleFactName =                     "elevatorAngle";
 const char* VehicleEnvgoFactGroup::_desiredHeightFactName =                     "desiredHeight";
 const char* VehicleEnvgoFactGroup::_gearFactName =                              "gear";
+const char* VehicleEnvgoFactGroup::_sternHeightFactName =                       "sternHeight";
+const char* VehicleEnvgoFactGroup::_sonarFrontFactName =                        "sonarFront";
+const char* VehicleEnvgoFactGroup::_sonarBackFactName =                         "sonarBack";
 
 
 VehicleEnvgoFactGroup::VehicleEnvgoFactGroup(QObject* parent)
@@ -56,6 +59,9 @@ VehicleEnvgoFactGroup::VehicleEnvgoFactGroup(QObject* parent)
     , _elevatorAngleFact                (0, _elevatorAngleFactName,                 FactMetaData::valueTypeFloat)
     , _desiredHeightFact                (0, _desiredHeightFactName,                 FactMetaData::valueTypeFloat)
     , _gearFact                         (0, _gearFactName,                          FactMetaData::valueTypeFloat)
+    , _sternHeightFact                  (0, _sternHeightFactName,                   FactMetaData::valueTypeFloat)
+    , _sonarFrontFact                   (0, _sonarFrontFactName,                    FactMetaData::valueTypeFloat)
+    , _sonarBackFact                    (0, _sonarBackFactName,                     FactMetaData::valueTypeFloat)
 
 {
     _addFact(&_mechPwrFact,                     _mechPwrFactName);
@@ -67,6 +73,10 @@ VehicleEnvgoFactGroup::VehicleEnvgoFactGroup(QObject* parent)
     _addFact(&_elevatorAngleFact,               _elevatorAngleFactName);
     _addFact(&_desiredHeightFact,               _desiredHeightFactName);
     _addFact(&_gearFact,                        _gearFactName);
+    _addFact(&_sternHeightFact,                 _sternHeightFactName);
+    _addFact(&_sonarFrontFact,                  _sonarFrontFactName);
+    _addFact(&_sonarBackFact,                   _sonarBackFactName);
+
 }
 
 void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_message_t& message)
@@ -76,7 +86,7 @@ void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_messag
         mavlink_msg_debug_vect_decode(&message, &content);
 
         mechPwr()->setRawValue                      (content.x);
-        efficiency()->setRawValue                   (content.y);
+        efficiency()->setRawValue                   (round(content.y));
         gPerW()->setRawValue                        (content.z);
     }  else if (message.msgid == MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY) {
         mavlink_debug_float_array_t content;
@@ -87,5 +97,8 @@ void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_messag
         elevatorAngle()->setRawValue                (content.data[36] * 180 / M_PI);
         desiredHeight()->setRawValue                (round(content.data[26] * 100));
         gear()->setRawValue                         ((int)content.data[48]);
+        sternHeight()->setRawValue                  (round(content.data[33] * 100));
+        sonarFront()->setRawValue                   (round(content.data[45] * 100));
+        sonarBack()->setRawValue                    (round(content.data[46] * 100));
     }
 }

@@ -54,6 +54,9 @@ class VehicleEnvgoFactGroup : public FactGroup
         Q_PROPERTY(Fact* elevatorAngle      READ elevatorAngle      CONSTANT)
         Q_PROPERTY(Fact* desiredHeight      READ desiredHeight      CONSTANT)
         Q_PROPERTY(Fact* gear               READ gear               CONSTANT)
+        Q_PROPERTY(Fact* sternHeight        READ sternHeight        CONSTANT)
+        Q_PROPERTY(Fact* sonarFront         READ sonarFront         CONSTANT)
+        Q_PROPERTY(Fact* sonarBack          READ sonarBack          CONSTANT)
         
         Fact* mechPwr                       () { return &_mechPwrFact; }
         Fact* efficiency                    () { return &_efficiencyFact; }
@@ -64,6 +67,9 @@ class VehicleEnvgoFactGroup : public FactGroup
         Fact* elevatorAngle                 () { return &_elevatorAngleFact; }
         Fact* desiredHeight                 () { return &_desiredHeightFact; }
         Fact* gear                          () { return &_gearFact; }
+        Fact* sternHeight                   () { return &_sternHeightFact; }
+        Fact* sonarFront                    () { return &_sonarFrontFact; }
+        Fact* sonarBack                     () { return &_sonarBackFact; }
 
 
         // Overrides from FactGroup
@@ -78,6 +84,9 @@ class VehicleEnvgoFactGroup : public FactGroup
         static const char* _elevatorAngleFactName;
         static const char* _desiredHeightFactName;
         static const char* _gearFactName;
+        static const char* _sternHeightFactName;
+        static const char* _sonarFrontFactName;
+        static const char* _sonarBackFactName;
 
     private:
         Fact _mechPwrFact;
@@ -89,6 +98,9 @@ class VehicleEnvgoFactGroup : public FactGroup
         Fact _elevatorAngleFact;
         Fact _desiredHeightFact;
         Fact _gearFact;
+        Fact _sternHeightFact;
+        Fact _sonarFrontFact;
+        Fact _sonarBackFact;
 };
 
 
