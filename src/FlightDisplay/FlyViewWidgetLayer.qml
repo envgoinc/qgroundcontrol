@@ -64,8 +64,9 @@ Item {
     property string _groundSpeed:           _activeVehicle ? (isNaN(_activeVehicle.groundSpeed.value)                               ? "0.0 m/s"                 :   _activeVehicle.groundSpeed.value.toFixed(1)) + ' ' + _activeVehicle.groundSpeed.units                                           : "Connect To Vehicle"
     property string _gear:                  _activeVehicle ? (isNaN(_activeVehicle.envgo.gear.rawValue)                             ? "N/A"                     :   _activeVehicle.envgo.gear.rawValue)                                                                                             : ' '
     property string _efficiency:            _activeVehicle ? (isNaN(_activeVehicle.envgo.efficiency.rawValue)                       ? "0.0"                     :   _activeVehicle.envgo.efficiency.rawValue) + ' ' + _activeVehicle.envgo.efficiency.units                                         : ' '
-    property string _sonarFront:            _activeVehicle ? (isNaN(_activeVehicle.envgo.sonarFront.rawValue)                       ? "0.0"                     :   "Snr Front: " + _activeVehicle.envgo.sonarFront.rawValue + ' ' + "cm")                                                          : ' '
-    property string _sonarBack:             _activeVehicle ? (isNaN(_activeVehicle.envgo.sonarBack.rawValue)                        ? "0.0"                     :   "Snr Back: " + _activeVehicle.envgo.sonarBack.rawValue + ' ' + "cm")                                                            : ' '
+    property string _sonarFront:            _activeVehicle ? (isNaN(_activeVehicle.envgo.sonarFront.rawValue)                       ? "0.0"                     :   "Snr Bow: " + _activeVehicle.envgo.sonarFront.rawValue + ' ' + "cm")                                                            : ' '
+    property string _sonarBackStarboard:    _activeVehicle ? (isNaN(_activeVehicle.envgo.sonarBackStarboard.rawValue)               ? "0.0"                     :   "Snr BackStar: " + _activeVehicle.envgo.sonarBackStarboard.rawValue + ' ' + "cm")                                               : ' '
+    property string _sonarBackPort:         _activeVehicle ? (isNaN(_activeVehicle.envgo.sonarBackPort.rawValue)                    ? "0.0"                     :   "Snr BackPort: " + _activeVehicle.envgo.sonarBackPort.rawValue + ' ' + "cm")                                                    : ' '
     property string _heading:               _activeVehicle ? _activeVehicle.heading.rawValue : ' '
     
 
@@ -493,7 +494,7 @@ Item {
             text: _sonarFront
         }
         Text {
-            id:sonarBack
+            id:sonarBackStarboard
             anchors{
                 top: sonarFront.bottom
                 left: parent.left
@@ -502,7 +503,19 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: 20
             font.bold: true
-            text: _sonarBack
+            text: _sonarBackStarboard
+        }
+        Text {
+            id:sonarBackPort
+            anchors{
+                top: sonarBackStarboard.bottom
+                left: parent.left
+                right: parent.right
+            }
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 20
+            font.bold: true
+            text: _sonarBackPort
         }
         TelemetryValuesBar {
             id:                 telemetryPanel
