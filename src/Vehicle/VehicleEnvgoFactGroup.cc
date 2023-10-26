@@ -44,8 +44,9 @@ const char* VehicleEnvgoFactGroup::_elevatorAngleFactName =                     
 const char* VehicleEnvgoFactGroup::_desiredHeightFactName =                     "desiredHeight";
 const char* VehicleEnvgoFactGroup::_gearFactName =                              "gear";
 const char* VehicleEnvgoFactGroup::_sternHeightFactName =                       "sternHeight";
-const char* VehicleEnvgoFactGroup::_sonarFrontFactName =                        "sonarFront";
-const char* VehicleEnvgoFactGroup::_sonarBackFactName =                         "sonarBack";
+const char* VehicleEnvgoFactGroup::_sonarFrontFactName =                        "sonarBow";
+const char* VehicleEnvgoFactGroup::_sonarBackStarboardFactName =                "sonarBackStar";
+const char* VehicleEnvgoFactGroup::_sonarBackPortFactName =                     "sonarBackPort";
 
 
 VehicleEnvgoFactGroup::VehicleEnvgoFactGroup(QObject* parent)
@@ -61,7 +62,8 @@ VehicleEnvgoFactGroup::VehicleEnvgoFactGroup(QObject* parent)
     , _gearFact                         (0, _gearFactName,                          FactMetaData::valueTypeFloat)
     , _sternHeightFact                  (0, _sternHeightFactName,                   FactMetaData::valueTypeFloat)
     , _sonarFrontFact                   (0, _sonarFrontFactName,                    FactMetaData::valueTypeFloat)
-    , _sonarBackFact                    (0, _sonarBackFactName,                     FactMetaData::valueTypeFloat)
+    , _sonarBackStarboardFact           (0, _sonarBackStarboardFactName,            FactMetaData::valueTypeFloat)
+    , _sonarBackPortFact                (0, _sonarBackPortFactName,                 FactMetaData::valueTypeFloat)
 
 {
     _addFact(&_mechPwrFact,                     _mechPwrFactName);
@@ -75,8 +77,8 @@ VehicleEnvgoFactGroup::VehicleEnvgoFactGroup(QObject* parent)
     _addFact(&_gearFact,                        _gearFactName);
     _addFact(&_sternHeightFact,                 _sternHeightFactName);
     _addFact(&_sonarFrontFact,                  _sonarFrontFactName);
-    _addFact(&_sonarBackFact,                   _sonarBackFactName);
-
+    _addFact(&_sonarBackStarboardFact,          _sonarBackStarboardFactName);
+    _addFact(&_sonarBackPortFact,               _sonarBackPortFactName);
 }
 
 void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_message_t& message)
@@ -99,6 +101,7 @@ void VehicleEnvgoFactGroup::handleMessage(Vehicle* /* vehicle */, mavlink_messag
         gear()->setRawValue                         ((int)content.data[48]);
         sternHeight()->setRawValue                  (round(content.data[33] * 100));
         sonarFront()->setRawValue                   (round(content.data[45] * 100));
-        sonarBack()->setRawValue                    (round(content.data[46] * 100));
+        sonarBackStarboard()->setRawValue           (round(content.data[46] * 100));
+        sonarBackPort()->setRawValue                (round(content.data[47] * 100));
     }
 }

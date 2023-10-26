@@ -56,7 +56,8 @@ class VehicleEnvgoFactGroup : public FactGroup
         Q_PROPERTY(Fact* gear               READ gear               CONSTANT)
         Q_PROPERTY(Fact* sternHeight        READ sternHeight        CONSTANT)
         Q_PROPERTY(Fact* sonarFront         READ sonarFront         CONSTANT)
-        Q_PROPERTY(Fact* sonarBack          READ sonarBack          CONSTANT)
+        Q_PROPERTY(Fact* sonarBackStarboard READ sonarBackStarboard CONSTANT)
+        Q_PROPERTY(Fact* sonarBackPort      READ sonarBackPort      CONSTANT)
         
         Fact* mechPwr                       () { return &_mechPwrFact; }
         Fact* efficiency                    () { return &_efficiencyFact; }
@@ -69,7 +70,8 @@ class VehicleEnvgoFactGroup : public FactGroup
         Fact* gear                          () { return &_gearFact; }
         Fact* sternHeight                   () { return &_sternHeightFact; }
         Fact* sonarFront                    () { return &_sonarFrontFact; }
-        Fact* sonarBack                     () { return &_sonarBackFact; }
+        Fact* sonarBackStarboard            () { return &_sonarBackStarboardFact; }
+        Fact* sonarBackPort                 () { return &_sonarBackPortFact; }
 
 
         // Overrides from FactGroup
@@ -86,7 +88,8 @@ class VehicleEnvgoFactGroup : public FactGroup
         static const char* _gearFactName;
         static const char* _sternHeightFactName;
         static const char* _sonarFrontFactName;
-        static const char* _sonarBackFactName;
+        static const char* _sonarBackStarboardFactName;
+        static const char* _sonarBackPortFactName;
 
     private:
         Fact _mechPwrFact;
@@ -100,7 +103,8 @@ class VehicleEnvgoFactGroup : public FactGroup
         Fact _gearFact;
         Fact _sternHeightFact;
         Fact _sonarFrontFact;
-        Fact _sonarBackFact;
+        Fact _sonarBackStarboardFact;
+        Fact _sonarBackPortFact;
 };
 
 
